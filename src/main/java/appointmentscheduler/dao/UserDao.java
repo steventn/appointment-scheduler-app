@@ -11,18 +11,17 @@ import java.sql.SQLException;
 
 public class UserDao {
     public static Users getUser(String userName) throws SQLException, Exception{
-        // type is name or phone, value is the name or the phone #
         DBConnection.openConnection();
-        String sqlStatement="select * FROM users WHERE User_Name  = '" + userName+ "'";
-        //  String sqlStatement="select FROM address";
+        String sqlStatement = "select * FROM users WHERE User_Name  = '" + userName+ "'";
         Query.makeQuery(sqlStatement);
         Users userResult;
         ResultSet result=Query.getResult();
         while(result.next()){
             int userid=result.getInt("User_ID");
-            String userNameG=result.getString("User_Name");
+            String userNameG = result.getString("User_Name");
             String password=result.getString("Password");
-            userResult= new Users(userid, userName, password);
+            userResult = new Users(userName, password);
+            System.out.println(userResult);
             return userResult;
         }
         DBConnection.closeConnection();
@@ -38,7 +37,7 @@ public class UserDao {
             int userid=result.getInt("User_ID");
             String userNameG=result.getString("User_Name");
             String password=result.getString("Password");
-            Users userResult= new Users(userid, userNameG, password);
+            Users userResult= new Users(userNameG, password);
             allUsers.add(userResult);
 
         }
