@@ -16,8 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import appointmentscheduler.model.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -116,7 +114,7 @@ public class MainController implements Initializable {
      */
     @FXML
     void addPartsAction(ActionEvent event) throws IOException {
-        Pane addParts = FXMLLoader.load(getClass().getResource("/AddPartView.fxml"));
+        Pane addParts = FXMLLoader.load(getClass().getResource("/AddCustomerView.fxml"));
         Scene scene = new Scene(addParts);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -136,7 +134,7 @@ public class MainController implements Initializable {
         if (modifyPart == null) {
             displayAlert(3);
         } else {
-            Pane addParts = FXMLLoader.load(getClass().getResource("/ModifyPartView.fxml"));
+            Pane addParts = FXMLLoader.load(getClass().getResource("/ModifyAppointmentView.fxml"));
             Scene scene = new Scene(addParts);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(scene);
@@ -219,7 +217,7 @@ public class MainController implements Initializable {
      */
     @FXML
     void addProductsAction(ActionEvent event) throws IOException {
-        Pane addParts = FXMLLoader.load(getClass().getResource("/AddProductView.fxml"));
+        Pane addParts = FXMLLoader.load(getClass().getResource("/AddAppointmentView.fxml"));
         Scene scene = new Scene(addParts);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -239,7 +237,7 @@ public class MainController implements Initializable {
         if (modifyProduct == null) {
             displayAlert(3);
         } else {
-            Pane addParts = FXMLLoader.load(getClass().getResource("/ModifyProductView.fxml"));
+            Pane addParts = FXMLLoader.load(getClass().getResource("/ModifyCustomerView.fxml"));
             Scene scene = new Scene(addParts);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(scene);

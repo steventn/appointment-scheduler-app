@@ -20,4 +20,11 @@ public class LoginController {
 
     private Users userModel;
 
+    private boolean loginStatus(String username, String password) {
+        try {
+            Users user = new Users(username, password);
+
+        }
+    }
+
 }

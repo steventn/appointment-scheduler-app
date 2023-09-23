@@ -45,4 +45,17 @@ public class UserDao {
         DBConnection.closeConnection();
         return allUsers;
     }
+
+    public static Users addUser(String userName) throws SQLException, Exception {
+        return null;
+    }
+
+    public static Users updateUser(String userName) throws SQLException, Exception {
+        return null;
+    }
+
+    public static Users deleteUser(String userName) throws SQLException, Exception {
+        return null;
+    }
+
 }
