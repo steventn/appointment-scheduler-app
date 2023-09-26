@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import appointmentscheduler.model.Users;
 
+
 public class LoginController {
     private static DAO<UserDao> userDao;
     @FXML
@@ -25,6 +26,11 @@ public class LoginController {
             Users user = new Users(username, password);
 
         }
+
+        catch (Exception e) {
+
+        }
+        return false;
     }
 
 }

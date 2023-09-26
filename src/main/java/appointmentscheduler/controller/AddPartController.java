@@ -1,8 +1,5 @@
 package appointmentscheduler.controller;
 
-import appointmentscheduler.model.InHouse;
-import appointmentscheduler.model.Inventory;
-import appointmentscheduler.model.Outsourced;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +9,6 @@ import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import appointmentscheduler.model.*;
 
 import java.io.IOException;
 import java.net.URL;

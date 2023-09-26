@@ -1,8 +1,5 @@
 package appointmentscheduler.controller;
 
-import appointmentscheduler.model.Inventory;
-import appointmentscheduler.model.Part;
-import appointmentscheduler.model.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
