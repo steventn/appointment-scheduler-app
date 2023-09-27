@@ -5,36 +5,36 @@ import appointmentscheduler.helper.DBConnection;
 import appointmentscheduler.helper.Query;
 
 import appointmentscheduler.model.Users;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class AppointmentDao {
-    public static Users getAppointment(int userId) throws SQLException, Exception {
+    public static Appointments getAppointment(int userId) throws SQLException, Exception {
         DBConnection.openConnection();
         String sqlStatement = "select * FROM appointments WHERE User_ID  = '" + userId + "'";
         Query.makeQuery(sqlStatement);
-        Appointments appointmentResult;
-        ResultSet result=Query.getResult();
-        while(result.next()){
-            String result_appointmentId = result.getString("Appointment_ID");
+        ResultSet result = Query.getResult();
+        Appointments appointmentResult = null;
+        while (result.next()) {
             String result_title = result.getString("Title");
             String result_description = result.getString("Description");
             String result_location = result.getString("Location");
-            String result_contactId = result.getString("Contact_ID");
             String result_type = result.getString("Type");
-            Timestamp result_start = result.getTimestamp("Start");
-            Timestamp result_end = result.getTimestamp("End");
-            String result_customerId = result.getString("Customer_ID");
+            String result_createdBy = result.getString("Created_By");
+            String result_lastUpdatedBy = result.getString("Last_Updated_By");
+            LocalDateTime result_start = result.getTimestamp("Start").toLocalDateTime();
+            LocalDateTime result_end = result.getTimestamp("End").toLocalDateTime();
+            Integer result_appointmentId = result.getInt("Appointment_ID");
+            Integer result_customerId = result.getInt("Customer_ID");
+            Integer result_userId = result.getInt("User_ID");
+            Integer result_contactId = result.getInt("Contact_ID");
 
-            appointmentResult = new Appointments(result_appointmentId, result_customerId, userId, result_contactId,
-                    result_title, result_description, result_location, result_type);
-            return appointmentResult;
+            appointmentResult = new Appointments(result_appointmentId, result_customerId, result_userId, result_contactId, result_title, result_description, result_location, result_type, result_createdBy, result_lastUpdatedBy, result_start, result_end);
         }
         DBConnection.closeConnection();
-        return null;
+        return appointmentResult;
     }
 
     public static Users addAppointment(String username) throws SQLException, Exception {

@@ -13,11 +13,10 @@ public class Appointments {
     private String type;
     private String createdBy;
     private String lastUpdatedBy;
-    private String contactName;
     private LocalDateTime start;
     private LocalDateTime end;
 
-    public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, String createdBy, String lastUpdatedBy, String contactName, LocalDateTime start, LocalDateTime end) {
+    public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, String createdBy, String lastUpdatedBy, LocalDateTime start, LocalDateTime end) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.userId = userId;
@@ -28,7 +27,6 @@ public class Appointments {
         this.type = type;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
-        this.contactName = contactName;
         this.start = start;
         this.end = end;
     }
@@ -111,14 +109,6 @@ public class Appointments {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
     }
 
     public LocalDateTime getStart() {
