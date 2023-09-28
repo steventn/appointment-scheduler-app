@@ -11,6 +11,12 @@ public class FirstLevelDivisons {
     private String lastUpdatedBy;
     private int countryId;
 
+    public FirstLevelDivisons(int divisionId, String division, int countryId) {
+        this.divisionId = divisionId;
+        this.division = division;
+        this.countryId = countryId;
+    }
+
     public FirstLevelDivisons(int divisionId, String division, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
         this.divisionId = divisionId;
         this.division = division;

@@ -23,6 +23,14 @@ public class LoginController {
 
     private boolean loginStatus(String username, String password) {
         try {
+            String username_field = usernameField.getText();
+            String password_field = passwordField.getText();
+            int loginResult = UserDao.validateUser(username_field, password_field);
+            if (loginResult != -1) {
+
+            }
+
+
             Users user = new Users(username, password);
 
         }

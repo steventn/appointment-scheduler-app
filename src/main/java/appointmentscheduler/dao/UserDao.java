@@ -15,7 +15,7 @@ public class UserDao {
         String sqlStatement = "select * FROM users WHERE User_Name  = '" + username+ "'";
         Query.makeQuery(sqlStatement);
         Users userResult;
-        ResultSet result=Query.getResult();
+        ResultSet result = Query.getResult();
         while(result.next()){
             int userid = result.getInt("User_ID");
             String result_username = result.getString("User_Name");
@@ -44,16 +44,32 @@ public class UserDao {
         return allUsers;
     }
 
-    public static Users addUser(String userName) throws SQLException, Exception {
+    public static Users addUser(String username) throws SQLException, Exception {
         return null;
     }
 
-    public static Users updateUser(String userName) throws SQLException, Exception {
+    public static Users updateUser(String username) throws SQLException, Exception {
         return null;
     }
 
-    public static Users deleteUser(String userName) throws SQLException, Exception {
+    public static Users deleteUser(String username) throws SQLException, Exception {
         return null;
+    }
+
+    public static Integer validateUser(String username, String password) throws SQLException {
+        DBConnection.openConnection();
+        try {
+            String sqlStatement = "select * FROM users WHERE User_Name  = '" + username+ "' and Password = '" + password + "'";
+            Query.makeQuery(sqlStatement);
+            ResultSet result = Query.getResult();
+            if ((result.getString("User_Name") == username) && (result.getString("Password") == password)) {
+                Integer result_userId = result.getInt("User_ID");
+                return result_userId;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
 }
