@@ -63,20 +63,26 @@ public class UserDao {
     public static Integer validateUser(String username, String password) throws SQLException {
         DBConnection.openConnection();
         try {
-            String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet result = preparedStatement.executeQuery();
+            String checkUsernameSQL = "SELECT * FROM users WHERE User_Name = ?";
+            PreparedStatement usernameStatement = connection.prepareStatement(checkUsernameSQL);
+            usernameStatement.setString(1, username);
+            ResultSet usernameResult = usernameStatement.executeQuery();
 
-            if (result.next()) {
-                int result_userId = result.getInt("User_ID");
-                return result_userId;
+            if (usernameResult.next()) {
+                String storedPassword = usernameResult.getString("Password");
+
+                if (storedPassword.equals(password)) {
+                    int result_userId = usernameResult.getInt("User_ID");
+                    return result_userId;
+                } else {
+                    return -1;
+                }
+            } else {
+                return -2;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
-
 }
