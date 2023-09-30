@@ -5,18 +5,38 @@ import appointmentscheduler.dao.DAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import appointmentscheduler.model.Users;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.time.ZoneId;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-public class LoginController {
+
+public class LoginController implements Initializable {
     private static DAO<UserDao> userDao;
+
+    @FXML
+    private Label titleField;
+
+    @FXML
+    private Label usernameFieldLabel;
+
+    @FXML
+    private Label passwordFieldLabel;
+
+    @FXML
+    private Button signInButton;
 
     @FXML
     private TextField usernameField;
@@ -26,6 +46,9 @@ public class LoginController {
 
     @FXML
     private Label locationLabel;
+
+    @FXML
+    private Label locationField;
 
     private Users userModel;
 
@@ -60,22 +83,47 @@ public class LoginController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         switch (alertType) {
-            case 1:
+            case 1 -> {
                 alert.setTitle("Login Error");
                 alert.setHeaderText("Invalid Username or Password");
                 alert.setContentText("Please try again.");
-                break;
-            case 2:
+            }
+            case 2 -> {
                 alert.setTitle("Login Error");
                 alert.setHeaderText("Empty Fields");
                 alert.setContentText("Please fill in both Username and Password fields.");
-                break;
-            case 3:
+            }
+            case 3 -> {
                 alert.setTitle("Login Error");
                 alert.setHeaderText("Username Not Found");
                 alert.setContentText("Username does not exist, please check your username.");
-                break;
+            }
         }
         alert.showAndWait();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle loginLang) {
+        {
+            try {
+                Locale userlocale = Locale.getDefault();
+                Locale.setDefault(userlocale);
+                loginLang = ResourceBundle.getBundle("login", userlocale);
+                ZoneId zoneId = ZoneId.systemDefault();
+                String userTimeZone = zoneId.toString();
+
+                titleField.setText(loginLang.getString("login.label.title"));
+                usernameFieldLabel.setText(loginLang.getString("login.label.username"));
+                passwordFieldLabel.setText(loginLang.getString("login.label.password"));
+                signInButton.setText(loginLang.getString("login.label.signIn"));
+                locationLabel.setText(loginLang.getString("login.label.location"));
+                locationField.setText(userTimeZone);
+
+            } catch (MissingResourceException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
