@@ -9,16 +9,16 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appointmentscheduler.controller.LoginController">
    <children>
-      <Text id="title" layoutX="186.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduler Application">
+      <Text fx:id="title" layoutX="186.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduler Application">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Label id="usernameFieldLabel" layoutX="197.0" layoutY="137.0" prefHeight="17.0" text="Username" />
-      <TextField id="usernameField" layoutX="258.0" layoutY="133.0" />
-      <Label id="passwordFieldLabel" layoutX="197.0" layoutY="183.0" prefHeight="17.0" text="Password" />
-      <TextField id="passwordField" layoutX="258.0" layoutY="179.0" />
-      <Label id="passwordFieldLabel" layoutX="199.0" layoutY="221.0" prefHeight="17.0" text="Timezone" />
-      <Button id="signInButton" layoutX="306.0" layoutY="282.0" mnemonicParsing="false" text="Sign In" />
+      <Label fx:id="usernameFieldLabel" layoutX="197.0" layoutY="137.0" prefHeight="17.0" text="Username" />
+      <TextField fx:id="usernameField" layoutX="258.0" layoutY="133.0" />
+      <Label fx:id="passwordFieldLabel" layoutX="197.0" layoutY="183.0" prefHeight="17.0" text="Password" />
+      <TextField fx:id="passwordField" layoutX="258.0" layoutY="179.0" />
+      <Label fx:id="timezoneLabel" layoutX="199.0" layoutY="221.0" prefHeight="17.0" text="Timezone" />
+      <Button fx:id="signInButton" layoutX="306.0" layoutY="282.0" mnemonicParsing="false" text="Sign In" onAction="#loginStatus"/>
    </children>
 </AnchorPane>

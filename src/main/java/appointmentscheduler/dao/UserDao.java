@@ -6,8 +6,12 @@ import appointmentscheduler.helper.Query;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static appointmentscheduler.helper.DBConnection.connection;
 
 public class UserDao {
     public static Users getUser(String username) throws SQLException, Exception{
@@ -59,11 +63,14 @@ public class UserDao {
     public static Integer validateUser(String username, String password) throws SQLException {
         DBConnection.openConnection();
         try {
-            String sqlStatement = "select * FROM users WHERE User_Name  = '" + username+ "' and Password = '" + password + "'";
-            Query.makeQuery(sqlStatement);
-            ResultSet result = Query.getResult();
-            if ((result.getString("User_Name") == username) && (result.getString("Password") == password)) {
-                Integer result_userId = result.getInt("User_ID");
+            String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                int result_userId = result.getInt("User_ID");
                 return result_userId;
             }
         } catch (SQLException e) {

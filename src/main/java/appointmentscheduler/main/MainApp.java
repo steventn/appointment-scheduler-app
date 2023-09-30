@@ -20,9 +20,6 @@ public class MainApp extends Application {
         stage.setTitle("Inventory Management System");
         stage.setScene(scene);
         stage.show();
-
-        UserDao userData = new UserDao();
-        System.out.println(userData.getUser("test"));
     }
 
     public static void main(String[] args) {
