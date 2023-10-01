@@ -53,15 +53,20 @@ public class LoginController implements Initializable {
     @FXML
     private Label locationField;
 
+    private ResourceBundle messages;
+
     private Users userModel;
 
     @FXML
     private void loginStatus(ActionEvent event) {
         try {
+            Locale userLocale = Locale.getDefault();
+            this.messages = ResourceBundle.getBundle("error_message", userLocale);
+
             String username_field = usernameField.getText();
             String password_field = passwordField.getText();
             if (username_field == "" | password_field == "") {
-                displayAlert(2);
+                displayAlert(2, this.messages);
                 return;
             }
             int loginResult = UserDao.validateUser(username_field, password_field);
@@ -72,9 +77,9 @@ public class LoginController implements Initializable {
                 window.setScene(scene);
                 window.show();
             } else if (loginResult == -1) {
-                displayAlert(1);
+                displayAlert(1, this.messages);
             } else if (loginResult == -2) {
-                displayAlert(3);
+                displayAlert(3, this.messages);
             }
         }
         catch (Exception e) {
@@ -82,26 +87,32 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void displayAlert(int alertType) {
+    private void displayAlert(int alertType, ResourceBundle error_message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        String titleKey = "alert.loginError.title";
+        String headerTextKey = "";
+        String contentTextKey = "";
 
         switch (alertType) {
             case 1 -> {
-                alert.setTitle("Login Error");
-                alert.setHeaderText("Invalid Username or Password");
-                alert.setContentText("Please try again.");
+                headerTextKey = "alert.loginError.invalidCredentials";
+                contentTextKey = "alert.loginError.invalidCredentialsContext";
             }
             case 2 -> {
-                alert.setTitle("Login Error");
-                alert.setHeaderText("Empty Fields");
-                alert.setContentText("Please fill in both Username and Password fields.");
+                headerTextKey = "alert.loginError.emptyFields";
+                contentTextKey = "alert.loginError.emptyFieldsContext";
             }
             case 3 -> {
-                alert.setTitle("Login Error");
-                alert.setHeaderText("Username Not Found");
-                alert.setContentText("Username does not exist, please check your username.");
+                headerTextKey = "alert.loginError.usernameNotFound";
+                contentTextKey = "alert.loginError.usernameNotFoundContext";
             }
         }
+
+        alert.setTitle(error_message.getString(titleKey));
+        alert.setHeaderText(error_message.getString(headerTextKey));
+        alert.setContentText(error_message.getString(contentTextKey));
+
         alert.showAndWait();
     }
 
@@ -112,26 +123,24 @@ public class LoginController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle loginLang) {
+    public void initialize(URL url, ResourceBundle messages) {
         {
             try {
                 Locale userlocale = Locale.getDefault();
                 Locale.setDefault(userlocale);
-                loginLang = ResourceBundle.getBundle("login", userlocale);
+                this.messages = ResourceBundle.getBundle("login", userlocale);
                 ZoneId zoneId = ZoneId.systemDefault();
                 String userTimeZone = zoneId.toString();
 
-                titleField.setText(loginLang.getString("login.label.title"));
-                usernameFieldLabel.setText(loginLang.getString("login.label.username"));
-                passwordFieldLabel.setText(loginLang.getString("login.label.password"));
-                signInButton.setText(loginLang.getString("login.label.signIn"));
-                exitButton.setText(loginLang.getString("login.label.exit"));
-                locationLabel.setText(loginLang.getString("login.label.location"));
+                titleField.setText(this.messages.getString("login.label.title"));
+                usernameFieldLabel.setText(this.messages.getString("login.label.username"));
+                passwordFieldLabel.setText(this.messages.getString("login.label.password"));
+                signInButton.setText(this.messages.getString("login.label.signIn"));
+                exitButton.setText(this.messages.getString("login.label.exit"));
+                locationLabel.setText(this.messages.getString("login.label.location"));
                 locationField.setText(userTimeZone);
 
             } catch (MissingResourceException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
