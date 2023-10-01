@@ -27,6 +27,9 @@ public class LoginController implements Initializable {
     private static DAO<UserDao> userDao;
 
     @FXML
+    private Button exitButton;
+
+    @FXML
     private Label titleField;
 
     @FXML
@@ -102,6 +105,12 @@ public class LoginController implements Initializable {
         alert.showAndWait();
     }
 
+    @FXML
+    private void exitApplication(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle loginLang) {
         {
@@ -116,6 +125,7 @@ public class LoginController implements Initializable {
                 usernameFieldLabel.setText(loginLang.getString("login.label.username"));
                 passwordFieldLabel.setText(loginLang.getString("login.label.password"));
                 signInButton.setText(loginLang.getString("login.label.signIn"));
+                exitButton.setText(loginLang.getString("login.label.exit"));
                 locationLabel.setText(loginLang.getString("login.label.location"));
                 locationField.setText(userTimeZone);
 

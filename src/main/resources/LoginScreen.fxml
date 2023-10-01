@@ -18,7 +18,8 @@
       <Label fx:id="passwordFieldLabel" layoutX="197.0" layoutY="183.0" prefHeight="17.0" text="Password" />
       <TextField fx:id="passwordField" layoutX="272.0" layoutY="179.0" />
       <Label fx:id="locationLabel" layoutX="199.0" layoutY="221.0" prefHeight="17.0" text="Location" />
-      <Button fx:id="signInButton" layoutX="306.0" layoutY="282.0" mnemonicParsing="false" onAction="#loginStatus" text="Sign In" />
+      <Button fx:id="signInButton" layoutX="269.0" layoutY="279.0" mnemonicParsing="false" onAction="#loginStatus" text="Sign In" />
       <Label fx:id="locationField" layoutX="272.0" layoutY="221.0" prefHeight="17.0" text="America/California" />
+      <Button fx:id="exitButton" layoutX="346.0" layoutY="279.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
    </children>
 </AnchorPane>
