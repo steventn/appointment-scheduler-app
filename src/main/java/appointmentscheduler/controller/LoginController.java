@@ -1,7 +1,6 @@
 package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.UserDao;
-import appointmentscheduler.dao.DAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +21,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-
 public class LoginController implements Initializable {
-    private static DAO<UserDao> userDao;
 
     @FXML
     private Button exitButton;
@@ -65,55 +62,45 @@ public class LoginController implements Initializable {
 
             String username_field = usernameField.getText();
             String password_field = passwordField.getText();
-            if (username_field == "" | password_field == "") {
-                displayAlert(2, this.messages);
+            if (username_field.isEmpty() || password_field.isEmpty()) {
+                displayAlert("alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
                 return;
             }
             int loginResult = UserDao.validateUser(username_field, password_field);
-            if (loginResult > 0) {
-                Pane mainView = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
-                Scene scene = new Scene(mainView);
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setScene(scene);
-                window.show();
-            } else if (loginResult == -1) {
-                displayAlert(1, this.messages);
-            } else if (loginResult == -2) {
-                displayAlert(3, this.messages);
+            switch (loginResult) {
+                case -1:
+                    displayAlert("alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
+                    break;
+                case -2:
+                    displayAlert("alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
+                    break;
+                default:
+                    navigateToMainView(event);
+                    break;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void displayAlert(int alertType, ResourceBundle error_message) {
+    private void displayAlert(String headerTextKey, String contentTextKey) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         String titleKey = "alert.loginError.title";
-        String headerTextKey = "";
-        String contentTextKey = "";
 
-        switch (alertType) {
-            case 1 -> {
-                headerTextKey = "alert.loginError.invalidCredentials";
-                contentTextKey = "alert.loginError.invalidCredentialsContext";
-            }
-            case 2 -> {
-                headerTextKey = "alert.loginError.emptyFields";
-                contentTextKey = "alert.loginError.emptyFieldsContext";
-            }
-            case 3 -> {
-                headerTextKey = "alert.loginError.usernameNotFound";
-                contentTextKey = "alert.loginError.usernameNotFoundContext";
-            }
-        }
-
-        alert.setTitle(error_message.getString(titleKey));
-        alert.setHeaderText(error_message.getString(headerTextKey));
-        alert.setContentText(error_message.getString(contentTextKey));
+        alert.setTitle(this.messages.getString(titleKey));
+        alert.setHeaderText(this.messages.getString(headerTextKey));
+        alert.setContentText(this.messages.getString(contentTextKey));
 
         alert.showAndWait();
+    }
+
+    private void navigateToMainView(ActionEvent event) throws Exception {
+        Pane mainView = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
+        Scene scene = new Scene(mainView);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.show();
     }
 
     @FXML
@@ -124,25 +111,23 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle messages) {
-        {
-            try {
-                Locale userlocale = Locale.getDefault();
-                Locale.setDefault(userlocale);
-                this.messages = ResourceBundle.getBundle("login", userlocale);
-                ZoneId zoneId = ZoneId.systemDefault();
-                String userTimeZone = zoneId.toString();
+        try {
+            Locale userLocale = Locale.getDefault();
+            Locale.setDefault(userLocale);
+            this.messages = ResourceBundle.getBundle("login", userLocale);
+            ZoneId zoneId = ZoneId.systemDefault();
+            String userTimeZone = zoneId.toString();
 
-                titleField.setText(this.messages.getString("login.label.title"));
-                usernameFieldLabel.setText(this.messages.getString("login.label.username"));
-                passwordFieldLabel.setText(this.messages.getString("login.label.password"));
-                signInButton.setText(this.messages.getString("login.label.signIn"));
-                exitButton.setText(this.messages.getString("login.label.exit"));
-                locationLabel.setText(this.messages.getString("login.label.location"));
-                locationField.setText(userTimeZone);
+            titleField.setText(this.messages.getString("login.label.title"));
+            usernameFieldLabel.setText(this.messages.getString("login.label.username"));
+            passwordFieldLabel.setText(this.messages.getString("login.label.password"));
+            signInButton.setText(this.messages.getString("login.label.signIn"));
+            exitButton.setText(this.messages.getString("login.label.exit"));
+            locationLabel.setText(this.messages.getString("login.label.location"));
+            locationField.setText(userTimeZone);
 
-            } catch (MissingResourceException e) {
-                e.printStackTrace();
-            }
+        } catch (MissingResourceException e) {
+            e.printStackTrace();
         }
     }
 }
