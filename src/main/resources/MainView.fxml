@@ -35,7 +35,7 @@
                </font></Label>
             <Button fx:id="deleteCustomerButton" layoutX="119.0" layoutY="245.0" mnemonicParsing="false" text="Delete" />
             <Button fx:id="modifyCustomerButton" layoutX="59.0" layoutY="245.0" mnemonicParsing="false" text="Modify" />
-            <Button fx:id="addCustomerButton" layoutX="18.0" layoutY="245.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="addCustomerButton" layoutX="18.0" layoutY="245.0" mnemonicParsing="false" onAction="#addNewCustomerAction" text="Add" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="33.0" layoutY="46.0" prefHeight="100.0" prefWidth="915.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 1;">
@@ -60,7 +60,7 @@
                </font></Label>
             <Button fx:id="deleteAppointmentButton" layoutX="123.0" layoutY="237.0" mnemonicParsing="false" text="Delete" />
             <Button fx:id="modifyAppointmentButton" layoutX="62.0" layoutY="237.0" mnemonicParsing="false" text="Modify" />
-            <Button fx:id="addAppointmentButton" layoutX="18.0" layoutY="237.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="addAppointmentButton" layoutX="18.0" layoutY="237.0" mnemonicParsing="false" onAction="#addNewAppointmentAction" text="Add" />
          </children>
       </AnchorPane>
       <Button layoutX="931.0" layoutY="661.0" mnemonicParsing="false" text="Exit" />
