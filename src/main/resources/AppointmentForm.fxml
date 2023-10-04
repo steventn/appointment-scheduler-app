@@ -23,11 +23,11 @@
         <TextField fx:id="typeField" layoutX="147.0" layoutY="358.0" />
         <Button layoutX="449.0" layoutY="402.0" mnemonicParsing="false" onAction="#exitToMainViewAction" text="Cancel" />
         <Button fx:id="saveButton" layoutX="389.0" layoutY="402.0" mnemonicParsing="false" text="Save" />
-        <Text fx:id="titleLabel" layoutX="40.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling App" wrappingWidth="172.13671875">
+        <Label fx:id="titleLabel" layoutX="40.0" layoutY="37.0" text="Scheduling App">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
-        </Text>
+        </Label>
         <Label fx:id="customerLabel" layoutX="40.0" layoutY="53.0" prefHeight="20.0" prefWidth="82.0" text="Appointment">
             <font>
                 <Font name="System Bold" size="14.0" />

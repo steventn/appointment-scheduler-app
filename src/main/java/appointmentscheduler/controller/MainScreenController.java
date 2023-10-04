@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -145,23 +146,42 @@ public class MainScreenController implements Initializable {
             appointmentsList.addAll(allAppointments);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception
         }
     }
 
     @FXML
-    public void addNewCustomerAction(ActionEvent event) throws IOException {
-        Pane customer = FXMLLoader.load(getClass().getResource("/CustomerForm.fxml"));
-        Scene scene = new Scene(customer);
+    public void openCustomerForm(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/CustomerForm.fxml"));
+        Parent customerForm = loader.load();
+        CustomerController controller = loader.getController();
+
+        Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            controller.initializeForm(null);
+        } else {
+            controller.initializeForm(selectedCustomer);
+        }
+
+        Scene scene = new Scene(customerForm);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
     }
 
     @FXML
-    public void addNewAppointmentAction(ActionEvent event) throws IOException {
-        Pane customer = FXMLLoader.load(getClass().getResource("/AppointmentForm.fxml"));
-        Scene scene = new Scene(customer);
+    public void openAppointmentForm(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AppointmentForm.fxml"));
+        Parent customerForm = loader.load();
+        AppointmentController controller = loader.getController();
+
+        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            controller.initializeForm(null);
+        } else {
+            controller.initializeForm(selectedAppointment);
+        }
+
+        Scene scene = new Scene(customerForm);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
