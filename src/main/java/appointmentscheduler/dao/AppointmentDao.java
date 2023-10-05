@@ -6,10 +6,13 @@ import appointmentscheduler.helper.Query;
 
 import appointmentscheduler.model.Customers;
 import appointmentscheduler.model.Users;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,58 +20,76 @@ import java.util.List;
 import static appointmentscheduler.helper.DBConnection.connection;
 
 public class AppointmentDao {
-    public static Appointments getAppointment(int userId) throws SQLException, Exception {
-        DBConnection.openConnection();
-        String sqlStatement = "select * FROM appointments WHERE User_ID  = '" + userId + "'";
-        Query.makeQuery(sqlStatement);
-        ResultSet result = Query.getResult();
+    public static Appointments getAppointment(int userId) throws SQLException {
         Appointments appointmentResult = null;
-        while (result.next()) {
-            String result_title = result.getString("Title");
-            String result_description = result.getString("Description");
-            String result_location = result.getString("Location");
-            String result_type = result.getString("Type");
-            String result_createdBy = result.getString("Created_By");
-            String result_lastUpdatedBy = result.getString("Last_Updated_By");
-            LocalDateTime result_start = result.getTimestamp("Start").toLocalDateTime();
-            LocalDateTime result_end = result.getTimestamp("End").toLocalDateTime();
-            Integer result_appointmentId = result.getInt("Appointment_ID");
-            Integer result_customerId = result.getInt("Customer_ID");
-            Integer result_userId = result.getInt("User_ID");
-            Integer result_contactId = result.getInt("Contact_ID");
+        try {
+            DBConnection.openConnection();
+            String sqlStatement = "select * FROM appointments WHERE User_ID  = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+                statement.setInt(1, userId);
+                ResultSet result = statement.executeQuery();
 
-            appointmentResult = new Appointments(result_appointmentId, result_customerId, result_userId, result_contactId, result_title, result_description, result_location, result_type, result_createdBy, result_lastUpdatedBy, result_start, result_end);
+                while (result.next()) {
+                    appointmentResult = createAppointmentsFromResultSet(result);
+                }
+            }
+        } finally {
+            DBConnection.closeConnection();
         }
-        DBConnection.closeConnection();
         return appointmentResult;
     }
 
-    public List<Appointments> getAllAppointments() throws SQLException {
-        List<Appointments> appointmentsList = new ArrayList<>();
-        String getAllCustomersSQL = "SELECT * FROM appointments";
-        try (PreparedStatement customerStatement = connection.prepareStatement(getAllCustomersSQL);
-             ResultSet resultSet = customerStatement.executeQuery()) {
-            while (resultSet.next()) {
-                Appointments appointments = createAppointmentsFromResultSet(resultSet);
-                appointmentsList.add(appointments);
+    public ObservableList<Appointments> getAllAppointments() throws SQLException {
+        ObservableList<Appointments> appointmentList = FXCollections.observableArrayList();
+        try {
+            DBConnection.openConnection();
+            String getAllAppointmentsSQL = "SELECT * FROM appointments";
+            try (PreparedStatement statement = connection.prepareStatement(getAllAppointmentsSQL);
+                 ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Appointments appointments = createAppointmentsFromResultSet(resultSet);
+                    appointmentList.add(appointments);
+                }
             }
+        } finally {
+            DBConnection.closeConnection();
         }
-        return appointmentsList;
+        return appointmentList;
     }
 
-    public static Users addAppointment(String username) throws SQLException, Exception {
+    public void addAppointment(Appointments appointment) throws SQLException {
+        try {
+            DBConnection.openConnection();
+            String insertAppointmentSQL = "INSERT INTO appointments (Customer_ID, User_ID, Contact_ID, Title, Description, Location, Type, Start, End, Created_By, Last_Updated_By) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(insertAppointmentSQL)) {
+                statement.setInt(1, appointment.getCustomerId());
+                statement.setInt(2, appointment.getUserId());
+                statement.setInt(3, appointment.getContactId());
+                statement.setString(4, appointment.getTitle());
+                statement.setString(5, appointment.getDescription());
+                statement.setString(6, appointment.getLocation());
+                statement.setString(7, appointment.getType());
+                statement.setTimestamp(8, Timestamp.valueOf(appointment.getStart()));
+                statement.setTimestamp(9, Timestamp.valueOf(appointment.getEnd()));
+                statement.setString(10, appointment.getCreatedBy());
+                statement.setString(11, appointment.getLastUpdatedBy());
+
+                statement.executeUpdate();
+            }
+        } finally {
+            DBConnection.closeConnection();
+        }
+    }
+
+    public static Users updateAppointment(String username) throws SQLException {
         return null;
     }
 
-    public static Users updateAppointment(String username) throws SQLException, Exception {
+    public static Users deleteAppointment(String username) throws SQLException {
         return null;
     }
 
-    public static Users deleteAppointment(String username) throws SQLException, Exception {
-        return null;
-    }
-
-    private Appointments createAppointmentsFromResultSet(ResultSet resultSet) throws SQLException {
+    private static Appointments createAppointmentsFromResultSet(ResultSet resultSet) throws SQLException {
         int appointmentId = resultSet.getInt("Appointment_ID");
         int customerId = resultSet.getInt("Customer_ID");
         int userId = resultSet.getInt("User_ID");

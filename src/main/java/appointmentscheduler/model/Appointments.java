@@ -1,5 +1,8 @@
 package appointmentscheduler.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalDateTime;
 
 public class Appointments {
@@ -15,6 +18,19 @@ public class Appointments {
     private String lastUpdatedBy;
     private LocalDateTime start;
     private LocalDateTime end;
+
+    public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end) {
+        this.appointmentId = appointmentId;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+    }
 
     public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, String createdBy, String lastUpdatedBy, LocalDateTime start, LocalDateTime end) {
         this.appointmentId = appointmentId;

@@ -96,7 +96,7 @@ public class CustomerController implements Initializable {
         window.setScene(scene);
         window.show();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

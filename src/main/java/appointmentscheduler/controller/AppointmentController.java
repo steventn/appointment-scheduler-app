@@ -1,5 +1,6 @@
 package appointmentscheduler.controller;
 
+import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.model.Appointments;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AppointmentController implements Initializable {
@@ -135,6 +138,31 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    @FXML
+    public void addAppointment(ActionEvent event) throws IOException {
+        int appointmentId = Integer.parseInt(appointmentIDField.getText());
+        int customerId = Integer.parseInt(customerField.getText());
+        int userId = Integer.parseInt(userField.getText());
+        int contactId = Integer.parseInt(contactField.getText());
+        String title = appointmentTitleField.getText();
+        String description = appointmentDescriptionField.getText();
+        String location = appointmentLocationField.getText();
+        String type = typeField.getText();
+        LocalDateTime start = LocalDateTime.parse(startDateField.getText());
+        startTimeField.getText();
+        LocalDateTime end = LocalDateTime.parse(endDateField.getText());
+        endTimeField.getText();
+
+        Appointments newAppointment = new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, start, end);
+
+        AppointmentDao appointmentDao = new AppointmentDao();
+        try {
+            appointmentDao.addAppointment(newAppointment);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
+    }
     @FXML
     public void exitToMainViewAction(ActionEvent event) throws IOException {
         Pane mainScreen = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
