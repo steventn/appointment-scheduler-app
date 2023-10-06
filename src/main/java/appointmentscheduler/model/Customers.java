@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 
 public class Customers {
     private int customerId;
-    private int divisionId;
+    private String division;
+    private String country;
     private String name;
     private String address;
     private String postalCode;
@@ -14,9 +15,10 @@ public class Customers {
     private Timestamp createDate;
     private Timestamp lastUpdate;
 
-    public Customers(int customerId, int divisionId, String name, String address, String postalCode, String phone, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
+    public Customers(int customerId, String division, String country, String name, String address, String postalCode, String phone, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
         this.customerId = customerId;
-        this.divisionId = divisionId;
+        this.division = division;
+        this.country = country;
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
@@ -27,9 +29,10 @@ public class Customers {
         this.lastUpdate = lastUpdate;
     }
 
-    public Customers(int customerId, int divisionId, String name, String address, String postalCode, String phone) {
+    public Customers(int customerId, String division, String country, String name, String address, String postalCode, String phone) {
         this.customerId = customerId;
-        this.divisionId = divisionId;
+        this.division = division;
+        this.country = country;
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
@@ -44,12 +47,20 @@ public class Customers {
         this.customerId = customerId;
     }
 
-    public int getDivisionId() {
-        return divisionId;
+    public String getDivision() {
+        return division;
     }
 
-    public void setDivisionId(int divisionId) {
-        this.divisionId = divisionId;
+    public void setDivision(String country) {
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return division;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getName() {

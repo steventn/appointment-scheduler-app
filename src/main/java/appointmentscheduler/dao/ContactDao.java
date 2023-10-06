@@ -18,7 +18,7 @@ public class ContactDao {
         ResultSet result = Query.getResult();
         Contacts contactResult = null;
         while (result.next()) {
-            Integer result_contactId = result.getInt("Contact_ID");
+            int result_contactId = result.getInt("Contact_ID");
             String result_contactName = result.getString("Contact_Name");
             String result_email = result.getString("Email");
 

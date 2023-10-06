@@ -96,13 +96,14 @@ public class CustomerController implements Initializable {
     @FXML
     public void addCustomer(ActionEvent event) throws IOException {
         int customerId = Integer.parseInt(customerIDField.getText());
-        int divisionId = Integer.parseInt(firstLevelDivisionField.getText());
+        String division = firstLevelDivisionField.getText();
+        String country = null;
         String name = customerNameField.getText();
         String address = customerAddressField.getText();
         String postalCode = customerPostalCodeField.getText();
         String phone = customerPhoneNumberField.getText();
 
-        Customers newCustomer = new Customers(customerId, divisionId, name, address, postalCode, phone);
+        Customers newCustomer = new Customers(customerId, division, country, name, address, postalCode, phone);
 
         CustomerDao customerDao = new CustomerDao();
         try {

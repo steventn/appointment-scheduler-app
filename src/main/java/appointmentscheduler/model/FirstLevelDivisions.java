@@ -2,7 +2,7 @@ package appointmentscheduler.model;
 
 import java.sql.Timestamp;
 
-public class FirstLevelDivisons {
+public class FirstLevelDivisions {
     private int divisionId;
     private String division;
     private Timestamp createDate;
@@ -11,13 +11,13 @@ public class FirstLevelDivisons {
     private String lastUpdatedBy;
     private int countryId;
 
-    public FirstLevelDivisons(int divisionId, String division, int countryId) {
+    public FirstLevelDivisions(int divisionId, String division, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
         this.countryId = countryId;
     }
 
-    public FirstLevelDivisons(int divisionId, String division, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
+    public FirstLevelDivisions(int divisionId, String division, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
         this.createDate = createDate;

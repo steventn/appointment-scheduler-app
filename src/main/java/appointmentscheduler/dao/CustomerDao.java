@@ -13,7 +13,7 @@ public class CustomerDao {
     // Method to fetch all customers from the database
     public ObservableList<Customers> getAllCustomers() throws SQLException {
         ObservableList<Customers> customersList = FXCollections.observableArrayList();
-        String getAllCustomersSQL = "SELECT * FROM customers";
+        String getAllCustomersSQL = "SELECT * FROM customers JOIN first_level_divisions ON customers.Division_Id = first_level_divisions.Division_ID JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID;";
         try (PreparedStatement customerStatement = connection.prepareStatement(getAllCustomersSQL);
              ResultSet resultSet = customerStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -38,7 +38,7 @@ public class CustomerDao {
                 statement.setString(7, customer.getCreatedBy());
                 statement.setTimestamp(8, customer.getLastUpdate());
                 statement.setString(9, customer.getLastUpdatedBy());
-                statement.setInt(10, customer.getDivisionId());
+                statement.setString(10, customer.getDivision());
 
                 statement.executeUpdate();
             }
@@ -48,7 +48,8 @@ public class CustomerDao {
     }
     private Customers createCustomerFromResultSet(ResultSet resultSet) throws SQLException {
         int customerId = resultSet.getInt("Customer_ID");
-        int divisionId = resultSet.getInt("Division_ID");
+        String division = resultSet.getString("Division");
+        String country = resultSet.getString("Country");
         String name = resultSet.getString("Customer_Name");
         String address = resultSet.getString("Address");
         String postalCode = resultSet.getString("Postal_Code");
@@ -58,7 +59,7 @@ public class CustomerDao {
         Timestamp createDate = resultSet.getTimestamp("Create_Date");
         Timestamp lastUpdate = resultSet.getTimestamp("Last_Update");
 
-        return new Customers(customerId, divisionId, name, address, postalCode, phone, createdBy, lastUpdatedBy, createDate, lastUpdate);
+        return new Customers(customerId, division, country, name, address, postalCode, phone, createdBy, lastUpdatedBy, createDate, lastUpdate);
     }
 }
 

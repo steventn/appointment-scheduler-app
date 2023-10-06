@@ -121,8 +121,8 @@ public class MainScreenController implements Initializable {
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         stateProvinceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        firstLevelDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        countryColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        firstLevelDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+        countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
         customersTableView.setItems(customersList);
 
         appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
@@ -140,8 +140,8 @@ public class MainScreenController implements Initializable {
         try {
             CustomerDao customersDAO = new CustomerDao();
             AppointmentDao appointmentDao = new AppointmentDao();
-            List<Customers> allCustomers = customersDAO.getAllCustomers();
-            List<Appointments> allAppointments = appointmentDao.getAllAppointments();
+            ObservableList<Customers> allCustomers = customersDAO.getAllCustomers();
+            ObservableList<Appointments> allAppointments = appointmentDao.getAllAppointments();
             customersList.addAll(allCustomers);
             appointmentsList.addAll(allAppointments);
         } catch (SQLException e) {
