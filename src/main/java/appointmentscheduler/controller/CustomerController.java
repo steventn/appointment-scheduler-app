@@ -80,9 +80,9 @@ public class CustomerController implements Initializable {
             customerNameField.setText(customer.getName());
             customerAddressField.setText(customer.getAddress());
             customerPostalCodeField.setText(customer.getPostalCode());
-//            firstLevelDivisionField.setText(customer.getFirstLevelDivision()); // You may need to adjust this line
-//            countryField.setText(customer.getCountry()); // You may need to adjust this line
-            // Set other fields as needed
+            firstLevelDivisionField.setText(customer.getDivision());
+            countryField.setText(customer.getCountry());
+            customerPhoneNumberField.setText(customer.getPhone());
         } else {
             customerIDField.clear();
             customerNameField.clear();
@@ -90,6 +90,7 @@ public class CustomerController implements Initializable {
             customerPostalCodeField.clear();
             firstLevelDivisionField.clear();
             countryField.clear();
+            customerPhoneNumberField.clear();
         }
     }
 
@@ -110,7 +111,6 @@ public class CustomerController implements Initializable {
             customerDao.addCustomer(newCustomer);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception
         }
     }
 

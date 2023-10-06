@@ -51,12 +51,12 @@ public class Customers {
         return division;
     }
 
-    public void setDivision(String country) {
-        this.country = country;
+    public void setDivision(String division) {
+        this.division = division;
     }
 
     public String getCountry() {
-        return division;
+        return country;
     }
 
     public void setCountry(String country) {
