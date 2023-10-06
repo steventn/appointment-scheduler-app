@@ -1,5 +1,8 @@
 package appointmentscheduler.controller;
 
+import appointmentscheduler.dao.AppointmentDao;
+import appointmentscheduler.dao.CustomerDao;
+import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.Customers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
@@ -85,6 +90,26 @@ public class CustomerController implements Initializable {
             customerPostalCodeField.clear();
             firstLevelDivisionField.clear();
             countryField.clear();
+        }
+    }
+
+    @FXML
+    public void addCustomer(ActionEvent event) throws IOException {
+        int customerId = Integer.parseInt(customerIDField.getText());
+        int divisionId = Integer.parseInt(firstLevelDivisionField.getText());
+        String name = customerNameField.getText();
+        String address = customerAddressField.getText();
+        String postalCode = customerPostalCodeField.getText();
+        String phone = customerPhoneNumberField.getText();
+
+        Customers newCustomer = new Customers(customerId, divisionId, name, address, postalCode, phone);
+
+        CustomerDao customerDao = new CustomerDao();
+        try {
+            customerDao.addCustomer(newCustomer);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
         }
     }
 

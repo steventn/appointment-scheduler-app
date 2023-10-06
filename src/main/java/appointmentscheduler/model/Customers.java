@@ -27,6 +27,15 @@ public class Customers {
         this.lastUpdate = lastUpdate;
     }
 
+    public Customers(int customerId, int divisionId, String name, String address, String postalCode, String phone) {
+        this.customerId = customerId;
+        this.divisionId = divisionId;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

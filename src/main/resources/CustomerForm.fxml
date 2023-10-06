@@ -22,7 +22,7 @@
         <TextField fx:id="firstLevelDivisionField" layoutX="180.0" layoutY="317.0" />
         <TextField fx:id="countryField" layoutX="180.0" layoutY="364.0" />
         <Button layoutX="482.0" layoutY="408.0" mnemonicParsing="false" onAction="#exitToMainViewAction" text="Cancel" />
-        <Button fx:id="saveButton" layoutX="422.0" layoutY="408.0" mnemonicParsing="false" text="Save" />
+        <Button fx:id="saveButton" layoutX="422.0" layoutY="408.0" mnemonicParsing="false" onAction="#addCustomer" text="Save" />
       <Label fx:id="titleLabel" layoutX="40.0" layoutY="53.0" text="Scheduling App">
          <font>
             <Font name="System Bold" size="12.0" />
