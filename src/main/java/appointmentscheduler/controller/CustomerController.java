@@ -28,6 +28,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class CustomerController implements Initializable {
     @FXML
@@ -61,10 +62,10 @@ public class CustomerController implements Initializable {
     private TextField customerPostalCodeField;
 
     @FXML
-    private ComboBox<FirstLevelDivisions> firstLevelDivisionField;
+    private ComboBox<String> firstLevelDivisionField;
 
     @FXML
-    private ComboBox<Countries> countryField;
+    private ComboBox<String> countryField;
 
     @FXML
     private Button saveButton;
@@ -81,37 +82,21 @@ public class CustomerController implements Initializable {
     @FXML
     private TextField customerPhoneNumberField;
 
-    private ObservableList<Countries> countriesList = FXCollections.observableArrayList();
-    private ObservableList<FirstLevelDivisions> firstLevelDivisionsList = FXCollections.observableArrayList();
-
     public void initializeForm(Customers customer) {
         if (customer != null) {
             customerIDField.setText(String.valueOf(customer.getCustomerId()));
             customerNameField.setText(customer.getName());
             customerAddressField.setText(customer.getAddress());
             customerPostalCodeField.setText(customer.getPostalCode());
-//            firstLevelDivisionField.setText(customer.getDivision());
+            countryField.setValue(customer.getCountry());
+            firstLevelDivisionField.setValue(customer.getDivision());
             customerPhoneNumberField.setText(customer.getPhone());
         } else {
             customerIDField.clear();
             customerNameField.clear();
             customerAddressField.clear();
             customerPostalCodeField.clear();
-//            firstLevelDivisionField.clear();
             customerPhoneNumberField.clear();
-        }
-
-        try {
-            CountryDao countriesDao = new CountryDao();
-            FirstLevelDivisionDao firstLevelDivisionDao = new FirstLevelDivisionDao();
-            ObservableList<Countries> allCountries = countriesDao.getAllCountries();
-//            ObservableList<FirstLevelDivisions> allFirstLevelDivision = firstLevelDivisionDao.getAllFirstLevelDivisionByCountry();
-            countriesList.addAll(allCountries);
-//            appointmentsList.addAll(allAppointments);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -148,8 +133,34 @@ public class CustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             CountryDao countriesDao = new CountryDao();
+            FirstLevelDivisionDao firstLevelDivisionDao = new FirstLevelDivisionDao();
             ObservableList<Countries> allCountries = countriesDao.getAllCountries();
-            countryField.setItems(allCountries);
+            ObservableList<String> allCountryNames = allCountries.stream()
+                    .map(Countries::getCountry)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            ObservableList<FirstLevelDivisions> allFirstLevelDivisions = firstLevelDivisionDao.getAllFirstLevelDivisions();
+            ObservableList<String> allFirstLevelDivisionNames = allFirstLevelDivisions.stream()
+                    .map(FirstLevelDivisions::getDivision)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            countryField.setItems(allCountryNames);
+            firstLevelDivisionField.setItems(allFirstLevelDivisionNames);
+
+            countryField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    String selectedCountryName = newValue;
+                    try {
+                        ObservableList<FirstLevelDivisions> divisionsForCountry = firstLevelDivisionDao.getFirstLevelDivisionByCountry(selectedCountryName);
+                        ObservableList<String> divisionsPerCountryNames = divisionsForCountry.stream()
+                                .map(FirstLevelDivisions::getDivision)
+                                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+                        firstLevelDivisionField.getItems().setAll(divisionsPerCountryNames);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {

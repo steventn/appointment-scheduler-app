@@ -98,4 +98,5 @@ public class FirstLevelDivisions {
     public void setCountry(String country) {
         this.country = country;
     }
+
 }
