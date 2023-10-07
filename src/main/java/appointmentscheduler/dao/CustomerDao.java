@@ -26,7 +26,6 @@ public class CustomerDao {
 
     public void addCustomer(Customers customer) throws SQLException {
         try {
-            DBConnection.openConnection();
             String insertCustomerSQL = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(insertCustomerSQL)) {
                 statement.setInt(1, customer.getCustomerId());
@@ -42,8 +41,8 @@ public class CustomerDao {
 
                 statement.executeUpdate();
             }
-        } finally {
-            DBConnection.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     private Customers createCustomerFromResultSet(ResultSet resultSet) throws SQLException {

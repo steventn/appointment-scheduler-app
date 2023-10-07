@@ -10,11 +10,19 @@ public class FirstLevelDivisions {
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
     private int countryId;
+    private String country;
 
     public FirstLevelDivisions(int divisionId, String division, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
         this.countryId = countryId;
+    }
+
+    public FirstLevelDivisions(int divisionId, String division, int countryId, String country) {
+        this.divisionId = divisionId;
+        this.division = division;
+        this.countryId = countryId;
+        this.country = country;
     }
 
     public FirstLevelDivisions(int divisionId, String division, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
@@ -81,5 +89,13 @@ public class FirstLevelDivisions {
 
     public void setCountryId(int countryId) {
         this.countryId = countryId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

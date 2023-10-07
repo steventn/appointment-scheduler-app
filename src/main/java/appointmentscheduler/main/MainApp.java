@@ -14,8 +14,7 @@ import java.io.IOException;
 public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Pane myPane = FXMLLoader.load(getClass().getResource
-                ("/LoginScreen.fxml"));
+        Pane myPane = FXMLLoader.load(getClass().getResource("/LoginScreen.fxml"));
         Scene scene = new Scene(myPane);
         stage.setTitle("Inventory Management System");
         stage.setScene(scene);
@@ -23,6 +22,7 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
-    }
+        DBConnection.openConnection();
+        launch(args);
+        DBConnection.closeConnection();    }
 }

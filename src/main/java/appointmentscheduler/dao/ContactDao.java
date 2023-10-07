@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 public class ContactDao {
     public static Contacts getContact(int contactId) throws SQLException, Exception {
-        DBConnection.openConnection();
         String sqlStatement = "select * FROM contacts WHERE Contact_Name  = '" + contactId + "'";
         Query.makeQuery(sqlStatement);
         ResultSet result = Query.getResult();
@@ -24,7 +23,6 @@ public class ContactDao {
 
             contactResult = new Contacts(result_contactId, result_contactName, result_email);
         }
-        DBConnection.closeConnection();
         return contactResult;
     }
 }

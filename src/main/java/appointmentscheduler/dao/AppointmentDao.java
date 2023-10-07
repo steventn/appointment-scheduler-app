@@ -23,7 +23,6 @@ public class AppointmentDao {
     public static Appointments getAppointment(int userId) throws SQLException {
         Appointments appointmentResult = null;
         try {
-            DBConnection.openConnection();
             String sqlStatement = "select * FROM appointments WHERE User_ID  = ?";
             try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
                 statement.setInt(1, userId);
@@ -33,8 +32,8 @@ public class AppointmentDao {
                     appointmentResult = createAppointmentsFromResultSet(result);
                 }
             }
-        } finally {
-            DBConnection.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return appointmentResult;
     }
@@ -42,7 +41,6 @@ public class AppointmentDao {
     public ObservableList<Appointments> getAllAppointments() throws SQLException {
         ObservableList<Appointments> appointmentList = FXCollections.observableArrayList();
         try {
-            DBConnection.openConnection();
             String getAllAppointmentsSQL = "SELECT * FROM appointments";
             try (PreparedStatement statement = connection.prepareStatement(getAllAppointmentsSQL);
                  ResultSet resultSet = statement.executeQuery()) {
@@ -51,15 +49,14 @@ public class AppointmentDao {
                     appointmentList.add(appointments);
                 }
             }
-        } finally {
-            DBConnection.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return appointmentList;
     }
 
     public void addAppointment(Appointments appointment) throws SQLException {
         try {
-            DBConnection.openConnection();
             String insertAppointmentSQL = "INSERT INTO appointments (Customer_ID, User_ID, Contact_ID, Title, Description, Location, Type, Start, End, Created_By, Last_Updated_By) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(insertAppointmentSQL)) {
                 statement.setInt(1, appointment.getCustomerId());
@@ -76,8 +73,8 @@ public class AppointmentDao {
 
                 statement.executeUpdate();
             }
-        } finally {
-            DBConnection.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

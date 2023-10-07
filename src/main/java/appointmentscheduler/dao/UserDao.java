@@ -15,7 +15,6 @@ import static appointmentscheduler.helper.DBConnection.connection;
 
 public class UserDao {
     public static Users getUser(String username) throws SQLException, Exception{
-        DBConnection.openConnection();
         String sqlStatement = "select * FROM users WHERE User_Name  = '" + username+ "'";
         Query.makeQuery(sqlStatement);
         Users userResult;
@@ -27,12 +26,10 @@ public class UserDao {
             userResult = new Users(result_username, result_password);
             return userResult;
         }
-        DBConnection.closeConnection();
         return null;
     }
     public static ObservableList<Users> getAllUsers() throws SQLException, Exception{
         ObservableList<Users> allUsers= FXCollections.observableArrayList();
-        DBConnection.openConnection();
         String sqlStatement="select * from users";
         Query.makeQuery(sqlStatement);
         ResultSet result=Query.getResult();
@@ -44,7 +41,6 @@ public class UserDao {
             allUsers.add(userResult);
 
         }
-        DBConnection.closeConnection();
         return allUsers;
     }
 
@@ -61,7 +57,6 @@ public class UserDao {
     }
 
     public static Integer validateUser(String username, String password) throws SQLException {
-        DBConnection.openConnection();
         try {
             String checkUsernameSQL = "SELECT * FROM users WHERE User_Name = ?";
             PreparedStatement usernameStatement = connection.prepareStatement(checkUsernameSQL);

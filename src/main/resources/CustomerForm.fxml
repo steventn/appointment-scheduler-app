@@ -7,6 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appointmentscheduler.controller.CustomerController">
     <children>
         <Label fx:id="customerIDLabel" layoutX="66.0" layoutY="137.0" text="ID" />
@@ -19,8 +20,8 @@
         <TextField fx:id="customerNameField" layoutX="180.0" layoutY="180.0" />
         <TextField fx:id="customerAddressField" layoutX="180.0" layoutY="224.0" />
         <TextField fx:id="customerPostalCodeField" layoutX="180.0" layoutY="268.0" />
-        <TextField fx:id="firstLevelDivisionField" layoutX="180.0" layoutY="317.0" />
-        <TextField fx:id="countryField" layoutX="180.0" layoutY="364.0" />
+        <ComboBox fx:id="firstLevelDivisionField" layoutX="180.0" layoutY="317.0" />
+        <ComboBox fx:id="countryField" layoutX="180.0" layoutY="364.0" />
         <Button layoutX="482.0" layoutY="408.0" mnemonicParsing="false" onAction="#exitToMainViewAction" text="Cancel" />
         <Button fx:id="saveButton" layoutX="422.0" layoutY="408.0" mnemonicParsing="false" onAction="#addCustomer" text="Save" />
       <Label fx:id="titleLabel" layoutX="40.0" layoutY="53.0" text="Scheduling App">
