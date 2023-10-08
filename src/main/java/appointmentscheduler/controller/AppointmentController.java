@@ -2,9 +2,9 @@ package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.ContactDao;
-import appointmentscheduler.model.Appointments;
-import appointmentscheduler.model.Contacts;
-import appointmentscheduler.model.Countries;
+import appointmentscheduler.dao.CustomerDao;
+import appointmentscheduler.dao.UserDao;
+import appointmentscheduler.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -92,16 +89,16 @@ public class AppointmentController implements Initializable {
     private Label endTimeLabel;
 
     @FXML
-    private TextField startDateField;
+    private DatePicker startDateField;
 
     @FXML
-    private TextField startTimeField;
+    private ComboBox<LocalDateTime> startTimeField;
 
     @FXML
-    private TextField endDateField;
+    private DatePicker endDateField;
 
     @FXML
-    private TextField endTimeField;
+    private ComboBox<LocalDateTime> endTimeField;
 
     @FXML
     private Label customerLabel1;
@@ -136,10 +133,10 @@ public class AppointmentController implements Initializable {
             appointmentLocationField.clear();
 //            contactField.clear();
             typeField.clear();
-            startDateField.clear();
-            startTimeField.clear();
-            endDateField.clear();
-            endTimeField.clear();
+//            startDateField.clear();
+//            startTimeField.clear();
+//            endDateField.clear();
+//            endTimeField.clear();
         }
     }
 
@@ -153,7 +150,7 @@ public class AppointmentController implements Initializable {
         String description = appointmentDescriptionField.getText();
         String location = appointmentLocationField.getText();
         String type = typeField.getText();
-        LocalDateTime start = LocalDateTime.parse(startDateField.getText());
+        LocalDateTime start = startDateField.getValue().atStartOfDay();
         startTimeField.getText();
         LocalDateTime end = LocalDateTime.parse(endDateField.getText());
         endTimeField.getText();
@@ -181,20 +178,28 @@ public class AppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ContactDao contactDao = new ContactDao();
         AppointmentDao appointmentDao = new AppointmentDao();
+        UserDao userDao = new UserDao();
+        CustomerDao customerDao = new CustomerDao();
+
         try {
+            allAppointments = appointmentDao.getAllAppointments();
             ObservableList<Contacts> allContacts = contactDao.getAllContacts();
             ObservableList<String> allContactNames = allContacts.stream()
                     .map(Contacts::getContactName)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            allAppointments = appointmentDao.getAllAppointments();
-            ObservableList<Integer> allCustomerId = allAppointments.stream()
-                    .map(Appointments::getCustomerId)
+
+            ObservableList<Customers> allCustomers = customerDao.getAllCustomers();
+            ObservableList<Integer> allCustomerIds = allCustomers.stream()
+                    .map(Customers::getCustomerId)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            ObservableList<Integer> allUserId = allAppointments.stream()
-                    .map(Appointments::getUserId)
+
+            ObservableList<Users> allUsers = userDao.getAllUsers();
+            ObservableList<Integer> allUserId = allUsers.stream()
+                    .map(Users::getUserId)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
             contactField.setItems(allContactNames);
-            customerIdField.setItems(allCustomerId);
+            customerIdField.setItems(allCustomerIds);
             userIdField.setItems(allUserId);
         } catch (SQLException e) {
             throw new RuntimeException(e);

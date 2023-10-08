@@ -1,5 +1,6 @@
 package appointmentscheduler.dao;
 
+import appointmentscheduler.model.Contacts;
 import appointmentscheduler.model.Users;
 import appointmentscheduler.helper.DBConnection;
 import appointmentscheduler.helper.Query;
@@ -10,6 +11,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import static appointmentscheduler.helper.DBConnection.connection;
 
@@ -28,20 +30,17 @@ public class UserDao {
         }
         return null;
     }
-    public static ObservableList<Users> getAllUsers() throws SQLException, Exception{
-        ObservableList<Users> allUsers= FXCollections.observableArrayList();
-        String sqlStatement="select * from users";
-        Query.makeQuery(sqlStatement);
-        ResultSet result=Query.getResult();
-        while(result.next()){
-            int userid=result.getInt("User_ID");
-            String userNameG=result.getString("User_Name");
-            String password=result.getString("Password");
-            Users userResult= new Users(userNameG, password);
-            allUsers.add(userResult);
-
+    public ObservableList<Users> getAllUsers() throws SQLException {
+        ObservableList<Users> usersList = FXCollections.observableArrayList();
+        String getAllUsersSQL = "SELECT * FROM users";
+        try (PreparedStatement usersStatement = connection.prepareStatement(getAllUsersSQL);
+             ResultSet resultSet = usersStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Users users = createUsersFromResultSet(resultSet);
+                usersList.add(users);
+            }
         }
-        return allUsers;
+        return usersList;
     }
 
     public static Users addUser(String username) throws SQLException, Exception {
@@ -79,5 +78,17 @@ public class UserDao {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    private Users createUsersFromResultSet(ResultSet resultSet) throws SQLException {
+        int userId = resultSet.getInt("User_ID");
+        String username = resultSet.getString("User_name");
+        String password = resultSet.getString("Password");
+        String createdBy = resultSet.getString("Created_By");
+        String lastUpdatedBy = resultSet.getString("Last_Updated_By");
+        Timestamp createDate = resultSet.getTimestamp("Create_Date");
+        Timestamp lastUpdate = resultSet.getTimestamp("Last_Update");
+
+        return new Users(userId, username, password, createdBy, lastUpdatedBy, createDate, lastUpdate);
     }
 }
