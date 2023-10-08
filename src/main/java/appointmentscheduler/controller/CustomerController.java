@@ -172,6 +172,7 @@ public class CustomerController implements Initializable {
             countryField.setItems(allCountryNames);
             firstLevelDivisionField.setItems(allFirstLevelDivisionNames);
 
+            // Event listener created to dynamically assign First Level Divisions with selected Country
             countryField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     try {

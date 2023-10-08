@@ -1,7 +1,12 @@
 package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.AppointmentDao;
+import appointmentscheduler.dao.ContactDao;
 import appointmentscheduler.model.Appointments;
+import appointmentscheduler.model.Contacts;
+import appointmentscheduler.model.Countries;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -19,6 +25,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AppointmentController implements Initializable {
     @FXML
@@ -52,7 +59,7 @@ public class AppointmentController implements Initializable {
     private TextField appointmentLocationField;
 
     @FXML
-    private TextField contactField;
+    private ComboBox<String> contactField;
 
     @FXML
     private TextField typeField;
@@ -100,13 +107,16 @@ public class AppointmentController implements Initializable {
     private Label customerLabel1;
 
     @FXML
-    private TextField customerField;
+    private ComboBox<Integer> customerIdField;
 
     @FXML
     private Label userLabel;
 
     @FXML
-    private TextField userField;
+    private ComboBox<Integer> userIdField;
+
+    ObservableList<Appointments> allAppointments = null;
+
 
     public void initializeForm(Appointments appointment) {
         if (appointment != null) {
@@ -114,36 +124,31 @@ public class AppointmentController implements Initializable {
             appointmentTitleField.setText(appointment.getTitle());
             appointmentDescriptionField.setText(appointment.getDescription());
             appointmentLocationField.setText(appointment.getLocation());
-            contactField.setText(String.valueOf(appointment.getContactId()));
             typeField.setText(appointment.getType());
 //            startDateField.setText(appointment.getStartDate());
 //            startTimeField.setText(appointment.getStartTime());
 //            endDateField.setText(appointment.getEndDate());
 //            endTimeField.setText(appointment.getEndTime());
-            customerField.setText(String.valueOf(appointment.getCustomerId()));
-            userField.setText(String.valueOf(appointment.getUserId()));
         } else {
             appointmentIDField.setText("Auto Gen - Disabled");
             appointmentTitleField.clear();
             appointmentDescriptionField.clear();
             appointmentLocationField.clear();
-            contactField.clear();
+//            contactField.clear();
             typeField.clear();
             startDateField.clear();
             startTimeField.clear();
             endDateField.clear();
             endTimeField.clear();
-            customerField.clear();
-            userField.clear();
         }
     }
 
     @FXML
     public void addAppointment(ActionEvent event) throws IOException {
         int appointmentId = Integer.parseInt(appointmentIDField.getText());
-        int customerId = Integer.parseInt(customerField.getText());
-        int userId = Integer.parseInt(userField.getText());
-        int contactId = Integer.parseInt(contactField.getText());
+        int customerId = customerIdField.getValue();
+        int userId = userIdField.getValue();
+        int contactId = 0;
         String title = appointmentTitleField.getText();
         String description = appointmentDescriptionField.getText();
         String location = appointmentLocationField.getText();
@@ -174,6 +179,25 @@ public class AppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        ContactDao contactDao = new ContactDao();
+        AppointmentDao appointmentDao = new AppointmentDao();
+        try {
+            ObservableList<Contacts> allContacts = contactDao.getAllContacts();
+            ObservableList<String> allContactNames = allContacts.stream()
+                    .map(Contacts::getContactName)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            allAppointments = appointmentDao.getAllAppointments();
+            ObservableList<Integer> allCustomerId = allAppointments.stream()
+                    .map(Appointments::getCustomerId)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            ObservableList<Integer> allUserId = allAppointments.stream()
+                    .map(Appointments::getUserId)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            contactField.setItems(allContactNames);
+            customerIdField.setItems(allCustomerId);
+            userIdField.setItems(allUserId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

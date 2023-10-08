@@ -5,24 +5,34 @@ import appointmentscheduler.model.Contacts;
 import appointmentscheduler.helper.DBConnection;
 import appointmentscheduler.helper.Query;
 
+import appointmentscheduler.model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class ContactDao {
-    public static Contacts getContact(int contactId) throws SQLException, Exception {
-        String sqlStatement = "select * FROM contacts WHERE Contact_Name  = '" + contactId + "'";
-        Query.makeQuery(sqlStatement);
-        ResultSet result = Query.getResult();
-        Contacts contactResult = null;
-        while (result.next()) {
-            int result_contactId = result.getInt("Contact_ID");
-            String result_contactName = result.getString("Contact_Name");
-            String result_email = result.getString("Email");
 
-            contactResult = new Contacts(result_contactId, result_contactName, result_email);
+    private static final Connection connection = DBConnection.connection;
+
+    public ObservableList<Contacts> getAllContacts() throws SQLException {
+        ObservableList<Contacts> contactList = FXCollections.observableArrayList();
+        String getAllContactsSQL = "SELECT * FROM contacts";
+        try (PreparedStatement contactStatement = connection.prepareStatement(getAllContactsSQL);
+             ResultSet resultSet = contactStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Contacts contacts = createContactFromResultSet(resultSet);
+                contactList.add(contacts);
+            }
         }
-        return contactResult;
+        return contactList;
+    }
+
+    private Contacts createContactFromResultSet(ResultSet resultSet) throws SQLException {
+        int contactId = resultSet.getInt("Contact_ID");
+        String contactName = resultSet.getString("Contact_Name");
+        String email = resultSet.getString("Email");
+
+        return new Contacts(contactId, contactName, email);
     }
 }
