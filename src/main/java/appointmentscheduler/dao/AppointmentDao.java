@@ -1,10 +1,6 @@
 package appointmentscheduler.dao;
 
 import appointmentscheduler.model.Appointments;
-import appointmentscheduler.helper.DBConnection;
-import appointmentscheduler.helper.Query;
-
-import appointmentscheduler.model.Customers;
 import appointmentscheduler.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static appointmentscheduler.helper.DBConnection.connection;
 
@@ -73,6 +67,31 @@ public class AppointmentDao {
 
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAppointment(Appointments appointment) throws SQLException {
+        String updateCustomerSQL = "UPDATE appointments " +
+                "SET Customer_ID = ?, User_ID = ?, Contact_ID = ?, Title = ?, Description = ?, " +
+                "Location = ?, Type = ?, Start = ?, End = ? , Created_By = ?, Last_Updated_By = ? " +
+                "WHERE Appointment_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(updateCustomerSQL)) {
+            statement.setInt(12, appointment.getAppointmentId());
+            statement.setInt(1, appointment.getCustomerId());
+            statement.setInt(2, appointment.getUserId());
+            statement.setInt(3, appointment.getContactId());
+            statement.setString(4, appointment.getTitle());
+            statement.setString(5, appointment.getDescription());
+            statement.setString(6, appointment.getLocation());
+            statement.setString(7, appointment.getType());
+            statement.setTimestamp(8, Timestamp.valueOf(appointment.getStart()));
+            statement.setTimestamp(9, Timestamp.valueOf(appointment.getEnd()));
+            statement.setString(10, appointment.getCreatedBy());
+            statement.setString(11, appointment.getLastUpdatedBy());
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

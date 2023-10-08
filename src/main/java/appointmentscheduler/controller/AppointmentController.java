@@ -21,29 +21,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AppointmentController implements Initializable {
-    @FXML
-    private Label appointmentIDLabel;
-
-    @FXML
-    private Label appointmentTitleLabel;
-
-    @FXML
-    private Label appointmentDescriptionLabel;
-
-    @FXML
-    private Label appointmentLocationLabel;
-
-    @FXML
-    private Label firstLevelDivisionLabel;
-
-    @FXML
-    private Label countryLabel;
-
     @FXML
     private TextField appointmentIDField;
 
@@ -57,31 +41,13 @@ public class AppointmentController implements Initializable {
     private TextField appointmentLocationField;
 
     @FXML
-    private ComboBox<String> contactField;
+    private ComboBox<Contacts> contactField;
 
     @FXML
     private TextField typeField;
 
     @FXML
     private Button saveButton;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Label appointmentLabel;
-
-    @FXML
-    private Label startDateLabel;
-
-    @FXML
-    private Label startTimeLabel;
-
-    @FXML
-    private Label endDateLabel;
-
-    @FXML
-    private Label endTimeLabel;
 
     @FXML
     private DatePicker startDateField;
@@ -96,13 +62,7 @@ public class AppointmentController implements Initializable {
     private ComboBox<String> endTimeField;
 
     @FXML
-    private Label customerLabel1;
-
-    @FXML
     private ComboBox<Integer> customerIdField;
-
-    @FXML
-    private Label userLabel;
 
     @FXML
     private ComboBox<Integer> userIdField;
@@ -123,7 +83,7 @@ public class AppointmentController implements Initializable {
             appointmentLocationField.setText(appointment.getLocation());
             customerIdField.setValue(appointment.getCustomerId());
             userIdField.setValue(appointment.getUserId());
-            contactField.setValue(contactDao.getContact(appointment.getContactId()).getContactName());
+            contactField.setValue(contactDao.getContact(appointment.getContactId()));
             typeField.setText(appointment.getType());
             startDateField.setValue(appointment.getStartDate());
             startTimeField.setValue(String.valueOf(appointment.getStartTime()));
@@ -143,24 +103,30 @@ public class AppointmentController implements Initializable {
         int appointmentId = Integer.parseInt(appointmentIDField.getText());
         int customerId = customerIdField.getValue();
         int userId = userIdField.getValue();
-        int contactId = 0;
+        int contactId = contactField.getValue().getContactId();
         String title = appointmentTitleField.getText();
         String description = appointmentDescriptionField.getText();
         String location = appointmentLocationField.getText();
         String type = typeField.getText();
-        LocalDateTime start = startDateField.getValue().atStartOfDay();
-        startTimeField.getValue();
-        LocalDateTime end = endDateField.getValue().atStartOfDay();
-        endTimeField.getValue();
+        LocalDate start = startDateField.getValue();
+        LocalTime startTime = LocalTime.parse(startTimeField.getValue());
+        LocalDate end = endDateField.getValue();
+        LocalTime endTime = LocalTime.parse(endTimeField.getValue());
+        LocalDateTime finalStart = start.atTime(startTime);
+        LocalDateTime finalEnd = end.atTime(endTime);
 
-        Appointments newAppointment = new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, start, end);
-
+        Appointments newAppointment = new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, finalStart, finalEnd);
         AppointmentDao appointmentDao = new AppointmentDao();
+
         try {
-            appointmentDao.addAppointment(newAppointment);
+            if (appointmentId < latestAppointmentId) {
+                appointmentDao.updateAppointment(newAppointment);
+            } else {
+                appointmentDao.addAppointment(newAppointment);
+            }
+            exitToMainViewAction(event);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception
         }
     }
     @FXML
@@ -182,9 +148,9 @@ public class AppointmentController implements Initializable {
         try {
             allAppointments = appointmentDao.getAllAppointments();
             ObservableList<Contacts> allContacts = contactDao.getAllContacts();
-            ObservableList<String> allContactNames = allContacts.stream()
-                    .map(Contacts::getContactName)
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+//            ObservableList<String> allContactNames = allContacts.stream()
+//                    .map(Contacts::getContactName)
+//                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             ObservableList<Customers> allCustomers = customerDao.getAllCustomers();
             ObservableList<Integer> allCustomerIds = allCustomers.stream()
@@ -198,7 +164,7 @@ public class AppointmentController implements Initializable {
 
             ObservableList<String> businessHours = TimeUtil.generateBusinessHours();
 
-            contactField.setItems(allContactNames);
+            contactField.setItems(allContacts);
             customerIdField.setItems(allCustomerIds);
             userIdField.setItems(allUserId);
             startTimeField.setItems(businessHours);

@@ -1,10 +1,8 @@
 package appointmentscheduler.controller;
 
-import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.CountryDao;
 import appointmentscheduler.dao.CustomerDao;
 import appointmentscheduler.dao.FirstLevelDivisionDao;
-import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.Countries;
 import appointmentscheduler.model.Customers;
 import appointmentscheduler.model.FirstLevelDivisions;
@@ -33,24 +31,6 @@ import java.util.stream.Collectors;
 
 public class CustomerController implements Initializable {
     @FXML
-    private Label customerIDLabel;
-
-    @FXML
-    private Label customerNameLabel;
-
-    @FXML
-    private Label customerAddressLabel;
-
-    @FXML
-    private Label customerPostalCodeLabel;
-
-    @FXML
-    private Label firstLevelDivisionLabel;
-
-    @FXML
-    private Label countryLabel;
-
-    @FXML
     private TextField customerIDField;
 
     @FXML
@@ -70,15 +50,6 @@ public class CustomerController implements Initializable {
 
     @FXML
     private Button saveButton;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Label customerLabel;
-
-    @FXML
-    private Label customerPhoneNumberLabel;
 
     @FXML
     private TextField customerPhoneNumberField;
