@@ -137,6 +137,14 @@ public class MainScreenController implements Initializable {
         userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         appointmentsTableView.setItems(appointmentsList);
 
+        customersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            modifyCustomerButton.setDisable(newSelection == null);
+        });
+
+        appointmentsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            modifyAppointmentButton.setDisable(newSelection == null);
+        });
+
         try {
             CustomerDao customersDAO = new CustomerDao();
             AppointmentDao appointmentDao = new AppointmentDao();
@@ -185,5 +193,11 @@ public class MainScreenController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    @FXML
+    private void exitApplication(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

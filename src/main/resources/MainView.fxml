@@ -34,7 +34,7 @@
                   <Font name="System Bold" size="14.0" />
                </font></Label>
             <Button fx:id="deleteCustomerButton" layoutX="119.0" layoutY="245.0" mnemonicParsing="false" text="Delete" />
-            <Button fx:id="modifyCustomerButton" layoutX="59.0" layoutY="245.0" mnemonicParsing="false" onAction="#openCustomerForm" text="Modify" />
+            <Button fx:id="modifyCustomerButton" layoutX="59.0" layoutY="245.0" mnemonicParsing="false" disable="true" onAction="#openCustomerForm" text="Modify" />
             <Button fx:id="addCustomerButton" layoutX="18.0" layoutY="245.0" mnemonicParsing="false" onAction="#openCustomerForm" text="Add" />
          </children>
       </AnchorPane>
@@ -59,11 +59,11 @@
                   <Font name="System Bold" size="14.0" />
                </font></Label>
             <Button fx:id="deleteAppointmentButton" layoutX="123.0" layoutY="237.0" mnemonicParsing="false" text="Delete" />
-            <Button fx:id="modifyAppointmentButton" layoutX="62.0" layoutY="237.0" mnemonicParsing="false" onAction="#openAppointmentForm" text="Modify" />
+            <Button fx:id="modifyAppointmentButton" layoutX="62.0" layoutY="237.0" mnemonicParsing="false" disable="true" onAction="#openAppointmentForm" text="Modify" />
             <Button fx:id="addAppointmentButton" layoutX="18.0" layoutY="237.0" mnemonicParsing="false" onAction="#openAppointmentForm" text="Add" />
          </children>
       </AnchorPane>
-      <Button layoutX="931.0" layoutY="661.0" mnemonicParsing="false" text="Exit" />
+      <Button layoutX="931.0" layoutY="661.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
       <RadioButton layoutX="608.0" layoutY="15.0" mnemonicParsing="false" text="RadioButton" />
    </children>
 </AnchorPane>
