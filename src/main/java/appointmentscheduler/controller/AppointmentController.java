@@ -4,6 +4,7 @@ import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.ContactDao;
 import appointmentscheduler.dao.CustomerDao;
 import appointmentscheduler.dao.UserDao;
+import appointmentscheduler.helper.TimeUtil;
 import appointmentscheduler.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,13 +69,7 @@ public class AppointmentController implements Initializable {
     private Label titleLabel;
 
     @FXML
-    private Label customerLabel;
-
-    @FXML
-    private Label customerPhoneNumberLabel;
-
-    @FXML
-    private TextField customerPhoneNumberField;
+    private Label appointmentLabel;
 
     @FXML
     private Label startDateLabel;
@@ -92,13 +87,13 @@ public class AppointmentController implements Initializable {
     private DatePicker startDateField;
 
     @FXML
-    private ComboBox<LocalDateTime> startTimeField;
+    private ComboBox<String> startTimeField;
 
     @FXML
     private DatePicker endDateField;
 
     @FXML
-    private ComboBox<LocalDateTime> endTimeField;
+    private ComboBox<String> endTimeField;
 
     @FXML
     private Label customerLabel1;
@@ -113,30 +108,33 @@ public class AppointmentController implements Initializable {
     private ComboBox<Integer> userIdField;
 
     ObservableList<Appointments> allAppointments = null;
+    int latestAppointmentId = 0;
 
 
-    public void initializeForm(Appointments appointment) {
+    public void initializeForm(Appointments appointment) throws SQLException {
+        ContactDao contactDao = new ContactDao();
+        AppointmentDao appointmentDao = new AppointmentDao();
+        latestAppointmentId = appointmentDao.getLatestAppointmentId() + 1;
+
         if (appointment != null) {
             appointmentIDField.setText(String.valueOf(appointment.getAppointmentId()));
             appointmentTitleField.setText(appointment.getTitle());
             appointmentDescriptionField.setText(appointment.getDescription());
             appointmentLocationField.setText(appointment.getLocation());
+            customerIdField.setValue(appointment.getCustomerId());
+            userIdField.setValue(appointment.getUserId());
+            contactField.setValue(contactDao.getContact(appointment.getContactId()).getContactName());
             typeField.setText(appointment.getType());
-//            startDateField.setText(appointment.getStartDate());
-//            startTimeField.setText(appointment.getStartTime());
-//            endDateField.setText(appointment.getEndDate());
-//            endTimeField.setText(appointment.getEndTime());
+            startDateField.setValue(appointment.getStartDate());
+            startTimeField.setValue(String.valueOf(appointment.getStartTime()));
+            endDateField.setValue(appointment.getEndDate());
+            endTimeField.setValue(String.valueOf(appointment.getEndTime()));
         } else {
-            appointmentIDField.setText("Auto Gen - Disabled");
+            appointmentIDField.setText(String.valueOf(latestAppointmentId));
             appointmentTitleField.clear();
             appointmentDescriptionField.clear();
             appointmentLocationField.clear();
-//            contactField.clear();
             typeField.clear();
-//            startDateField.clear();
-//            startTimeField.clear();
-//            endDateField.clear();
-//            endTimeField.clear();
         }
     }
 
@@ -151,9 +149,9 @@ public class AppointmentController implements Initializable {
         String location = appointmentLocationField.getText();
         String type = typeField.getText();
         LocalDateTime start = startDateField.getValue().atStartOfDay();
-        startTimeField.getText();
-        LocalDateTime end = LocalDateTime.parse(endDateField.getText());
-        endTimeField.getText();
+        startTimeField.getValue();
+        LocalDateTime end = endDateField.getValue().atStartOfDay();
+        endTimeField.getValue();
 
         Appointments newAppointment = new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, start, end);
 
@@ -198,9 +196,13 @@ public class AppointmentController implements Initializable {
                     .map(Users::getUserId)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
+            ObservableList<String> businessHours = TimeUtil.generateBusinessHours();
+
             contactField.setItems(allContactNames);
             customerIdField.setItems(allCustomerIds);
             userIdField.setItems(allUserId);
+            startTimeField.setItems(businessHours);
+            endTimeField.setItems(businessHours);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

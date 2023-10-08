@@ -30,13 +30,11 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Label fx:id="customerLabel" layoutX="40.0" layoutY="53.0" prefHeight="20.0" prefWidth="82.0" text="Appointment">
+        <Label fx:id="appointmentLabel" layoutX="40.0" layoutY="53.0" prefHeight="20.0" prefWidth="82.0" text="Appointment">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
         </Label>
-        <Label fx:id="customerPhoneNumberLabel" layoutX="33.0" layoutY="407.0" text="Phone Number" />
-        <TextField fx:id="customerPhoneNumberField" layoutX="147.0" layoutY="402.0" />
         <Label fx:id="startDateLabel" layoutX="333.0" layoutY="123.0" text="Start Date" />
         <Label fx:id="startTimeLabel" layoutX="333.0" layoutY="166.0" text="Start Time" />
         <Label fx:id="endDateLabel" layoutX="333.0" layoutY="211.0" text="End Date" />

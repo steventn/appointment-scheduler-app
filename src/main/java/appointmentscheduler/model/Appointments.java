@@ -3,7 +3,9 @@ package appointmentscheduler.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Appointments {
     private int appointmentId;
@@ -18,6 +20,12 @@ public class Appointments {
     private String lastUpdatedBy;
     private LocalDateTime start;
     private LocalDateTime end;
+    private LocalTime startTime;
+    private LocalDate startDate;
+    private LocalTime endTime;
+    private LocalDate endDate;
+
+
 
     public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end) {
         this.appointmentId = appointmentId;
@@ -141,5 +149,25 @@ public class Appointments {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public LocalTime getStartTime() {
+        this.startTime = start.toLocalTime();
+        return startTime;
+    }
+
+    public LocalDate getStartDate() {
+        this.startDate = start.toLocalDate();
+        return startDate;
+    }
+
+    public LocalTime getEndTime() {
+        this.endTime = end.toLocalTime();
+        return endTime;
+    }
+
+    public LocalDate getEndDate() {
+        this.endDate = end.toLocalDate();
+        return endDate;
     }
 }

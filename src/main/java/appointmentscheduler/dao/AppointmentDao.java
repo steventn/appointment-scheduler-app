@@ -78,8 +78,17 @@ public class AppointmentDao {
         }
     }
 
-    public static Users updateAppointment(String username) throws SQLException {
-        return null;
+    public int getLatestAppointmentId() throws SQLException {
+        String getLastCustomerId = "SELECT Appointment_ID FROM appointments " +
+                "ORDER BY Appointment_ID DESC LIMIT 1";
+        int appointmentId = 0;
+        try (PreparedStatement customerStatement = connection.prepareStatement(getLastCustomerId);
+             ResultSet resultSet = customerStatement.executeQuery()) {
+            if (resultSet.next()) {
+                appointmentId = resultSet.getInt("Appointment_ID");
+            }
+        }
+        return appointmentId;
     }
 
     public static Users deleteAppointment(String username) throws SQLException {

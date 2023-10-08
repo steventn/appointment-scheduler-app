@@ -177,7 +177,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    public void openAppointmentForm(ActionEvent event) throws IOException {
+    public void openAppointmentForm(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AppointmentForm.fxml"));
         Parent customerForm = loader.load();
         AppointmentController controller = loader.getController();

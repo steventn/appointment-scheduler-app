@@ -11,6 +11,8 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+import static appointmentscheduler.helper.DBConnection.connection;
+
 public class ContactDao {
 
     private static final Connection connection = DBConnection.connection;
@@ -26,6 +28,24 @@ public class ContactDao {
             }
         }
         return contactList;
+    }
+
+    public Contacts getContact(int contactId) throws SQLException {
+        Contacts contactResult = null;
+        try {
+            String sqlStatement = "select * FROM contacts WHERE Contact_ID  = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+                statement.setInt(1, contactId);
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    contactResult = createContactFromResultSet(result);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactResult;
     }
 
     private Contacts createContactFromResultSet(ResultSet resultSet) throws SQLException {
