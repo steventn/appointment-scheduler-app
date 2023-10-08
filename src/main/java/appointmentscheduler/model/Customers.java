@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class Customers {
     private int customerId;
+    private int divisionId;
     private String division;
     private String country;
     private String name;
@@ -15,8 +16,9 @@ public class Customers {
     private Timestamp createDate;
     private Timestamp lastUpdate;
 
-    public Customers(int customerId, String division, String country, String name, String address, String postalCode, String phone, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
+    public Customers(int customerId, int divisionId, String division, String country, String name, String address, String postalCode, String phone, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
         this.customerId = customerId;
+        this.divisionId = divisionId;
         this.division = division;
         this.country = country;
         this.name = name;
@@ -29,9 +31,23 @@ public class Customers {
         this.lastUpdate = lastUpdate;
     }
 
-    public Customers(int customerId, String division, String country, String name, String address, String postalCode, String phone) {
+    public Customers(int customerId, int divisionId, String country, String name, String address, String postalCode, String phone, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
         this.customerId = customerId;
-        this.division = division;
+        this.divisionId = divisionId;
+        this.country = country;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.createDate = createDate;
+        this.lastUpdate = lastUpdate;
+    }
+
+    public Customers(int customerId, int divisionId, String country, String name, String address, String postalCode, String phone) {
+        this.customerId = customerId;
+        this.divisionId = divisionId;
         this.country = country;
         this.name = name;
         this.address = address;
@@ -47,13 +63,14 @@ public class Customers {
         this.customerId = customerId;
     }
 
+    public int getDivisionId() {
+        return divisionId;
+    }
+
     public String getDivision() {
         return division;
     }
 
-    public void setDivision(String division) {
-        this.division = division;
-    }
 
     public String getCountry() {
         return country;
@@ -126,5 +143,4 @@ public class Customers {
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-
 }

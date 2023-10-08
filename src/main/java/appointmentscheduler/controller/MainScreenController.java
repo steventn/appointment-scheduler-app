@@ -150,7 +150,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    public void openCustomerForm(ActionEvent event) throws IOException {
+    public void openCustomerForm(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/CustomerForm.fxml"));
         Parent customerForm = loader.load();
         CustomerController controller = loader.getController();

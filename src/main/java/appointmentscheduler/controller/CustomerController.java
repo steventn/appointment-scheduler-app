@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -82,7 +83,13 @@ public class CustomerController implements Initializable {
     @FXML
     private TextField customerPhoneNumberField;
 
-    public void initializeForm(Customers customer) {
+    ObservableList<FirstLevelDivisions> allFirstLevelDivisions;
+    int latestCustomerId = 0;
+
+    public void initializeForm(Customers customer) throws SQLException {
+        CustomerDao customerDao = new CustomerDao();
+        latestCustomerId = customerDao.getLatestCustomerId() + 1;
+
         if (customer != null) {
             customerIDField.setText(String.valueOf(customer.getCustomerId()));
             customerNameField.setText(customer.getName());
@@ -92,7 +99,7 @@ public class CustomerController implements Initializable {
             firstLevelDivisionField.setValue(customer.getDivision());
             customerPhoneNumberField.setText(customer.getPhone());
         } else {
-            customerIDField.clear();
+            customerIDField.setText(String.valueOf(latestCustomerId));
             customerNameField.clear();
             customerAddressField.clear();
             customerPostalCodeField.clear();
@@ -101,20 +108,40 @@ public class CustomerController implements Initializable {
     }
 
     @FXML
-    public void addCustomer(ActionEvent event) throws IOException {
+    public void addCustomer(ActionEvent event) throws Exception {
+        String divisionName = firstLevelDivisionField.getValue();
+        int divisionId = 0;
+
+        FirstLevelDivisions selectedDivision = allFirstLevelDivisions.stream()
+                .filter(division -> division.getDivision().equals(divisionName))
+                .findFirst()
+                .orElse(null);
+
+        if (selectedDivision != null) {
+            divisionId = selectedDivision.getDivisionId();
+        }
+
         int customerId = Integer.parseInt(customerIDField.getText());
-        String division = null;
-        String country = null;
+        String country = countryField.getValue();
         String name = customerNameField.getText();
         String address = customerAddressField.getText();
         String postalCode = customerPostalCodeField.getText();
         String phone = customerPhoneNumberField.getText();
+        String createdBy = "admin";
+        String lastUpdatedBy = "admin";
+        Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp lastUpdate = Timestamp.valueOf(LocalDateTime.now());
 
-        Customers newCustomer = new Customers(customerId, division, country, name, address, postalCode, phone);
-
+        Customers newCustomer = new Customers(customerId, divisionId, country, name, address, postalCode, phone, createdBy, lastUpdatedBy,  createDate, lastUpdate);
         CustomerDao customerDao = new CustomerDao();
+
         try {
-            customerDao.addCustomer(newCustomer);
+            if (customerId < latestCustomerId) {
+                customerDao.updateCustomer(newCustomer);
+            } else {
+                customerDao.addCustomer(newCustomer);
+            }
+            exitToMainViewAction(event);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -138,7 +165,7 @@ public class CustomerController implements Initializable {
             ObservableList<String> allCountryNames = allCountries.stream()
                     .map(Countries::getCountry)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            ObservableList<FirstLevelDivisions> allFirstLevelDivisions = firstLevelDivisionDao.getAllFirstLevelDivisions();
+            allFirstLevelDivisions = firstLevelDivisionDao.getAllFirstLevelDivisions();
             ObservableList<String> allFirstLevelDivisionNames = allFirstLevelDivisions.stream()
                     .map(FirstLevelDivisions::getDivision)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -147,9 +174,8 @@ public class CustomerController implements Initializable {
 
             countryField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
-                    String selectedCountryName = newValue;
                     try {
-                        ObservableList<FirstLevelDivisions> divisionsForCountry = firstLevelDivisionDao.getFirstLevelDivisionByCountry(selectedCountryName);
+                        ObservableList<FirstLevelDivisions> divisionsForCountry = firstLevelDivisionDao.getFirstLevelDivisionByCountry(newValue);
                         ObservableList<String> divisionsPerCountryNames = divisionsForCountry.stream()
                                 .map(FirstLevelDivisions::getDivision)
                                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
