@@ -1,8 +1,5 @@
 package appointmentscheduler.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -59,32 +56,16 @@ public class Appointments {
         return appointmentId;
     }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
     public int getCustomerId() {
         return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
     }
 
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public int getContactId() {
         return contactId;
-    }
-
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
     }
 
     public String getTitle() {
@@ -99,10 +80,6 @@ public class Appointments {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -115,40 +92,20 @@ public class Appointments {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getCreatedBy() {
         return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
     public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
-    }
-
     public LocalDateTime getEnd() {
         return end;
-    }
-
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
     }
 
     public LocalTime getStartTime() {
