@@ -1,7 +1,7 @@
 package appointmentscheduler.dao;
 
 import appointmentscheduler.model.Appointments;
-import appointmentscheduler.model.Users;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
 import java.time.LocalDateTime;
 
 import static appointmentscheduler.helper.DBConnection.connection;

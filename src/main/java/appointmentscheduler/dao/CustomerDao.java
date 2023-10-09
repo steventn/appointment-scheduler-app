@@ -2,6 +2,7 @@ package appointmentscheduler.dao;
 
 import appointmentscheduler.helper.DBConnection;
 import appointmentscheduler.model.Customers;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

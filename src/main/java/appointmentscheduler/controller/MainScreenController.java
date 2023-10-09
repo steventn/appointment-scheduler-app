@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,9 +25,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainScreenController implements Initializable {
+    @FXML
+    private RadioButton allAppointmentsFilter;
+
     @FXML
     private TableView<Customers> customersTableView;
 
@@ -105,6 +114,8 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        allAppointmentsFilter.setSelected(true);
+        
         IDColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -145,6 +156,41 @@ public class MainScreenController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void displayCurrentMonthAppointments() {
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue();
+        int currentYear = now.getYear();
+
+        ObservableList<Appointments> appointmentsInCurrentMonth = appointmentsList.stream()
+                .filter(appointment -> {
+                    LocalDateTime appointmentDateTime = appointment.getStart();
+                    int appointmentMonth = appointmentDateTime.getMonthValue();
+                    int appointmentYear = appointmentDateTime.getYear();
+                    return appointmentMonth == currentMonth && appointmentYear == currentYear;
+                })
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        appointmentsTableView.setItems(appointmentsInCurrentMonth);
+    }
+
+    public void displayCurrentWeekAppointments() {
+        LocalDate now = LocalDate.now();
+        int currentWeek = now.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+        int currentYear = now.getYear();
+
+        ObservableList<Appointments> appointmentsInCurrentWeek = appointmentsList.stream()
+                .filter(appointment -> {
+                    LocalDateTime appointmentDateTime = appointment.getStart();
+                    int appointmentWeek = appointmentDateTime.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+                    int appointmentYear = appointmentDateTime.getYear();
+                    return appointmentWeek == currentWeek && appointmentYear == currentYear;
+                })
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        appointmentsTableView.setItems(appointmentsInCurrentWeek);
     }
 
     @FXML
@@ -220,6 +266,7 @@ public class MainScreenController implements Initializable {
 
     }
 
+    @FXML
     private void refreshWindow() throws SQLException {
         AppointmentDao appointmentDao = new AppointmentDao();
         CustomerDao customerDao = new CustomerDao();

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -61,9 +62,12 @@
             <Button fx:id="deleteAppointmentButton" layoutX="123.0" layoutY="237.0" mnemonicParsing="false" onAction="#setDeleteAppointmentButton" text="Delete" />
             <Button fx:id="modifyAppointmentButton" disable="true" layoutX="62.0" layoutY="237.0" mnemonicParsing="false" onAction="#openAppointmentForm" text="Modify" />
             <Button fx:id="addAppointmentButton" layoutX="18.0" layoutY="237.0" mnemonicParsing="false" onAction="#openAppointmentForm" text="Add" />
-            <RadioButton fx:id="thisMonthFilter" layoutX="709.0" layoutY="11.0" mnemonicParsing="false" text="This Month" />
-            <RadioButton fx:id="thisWeekFilter" layoutX="803.0" layoutY="11.0" mnemonicParsing="false" text="This Week" />
-            <RadioButton fx:id="allAppointmentsFilter" layoutX="658.0" layoutY="11.0" mnemonicParsing="false" text="All" />
+            <fx:define>
+               <ToggleGroup fx:id="filter" />
+            </fx:define>
+            <RadioButton fx:id="thisMonthFilter" layoutX="709.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentMonthAppointments" text="This Month" toggleGroup="$filter" />
+            <RadioButton fx:id="thisWeekFilter" layoutX="803.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentWeekAppointments" text="This Week" toggleGroup="$filter" />
+            <RadioButton fx:id="allAppointmentsFilter" layoutX="658.0" layoutY="11.0" mnemonicParsing="false" onAction="#refreshWindow" text="All" toggleGroup="$filter" />
          </children>
       </AnchorPane>
       <Button layoutX="931.0" layoutY="661.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
