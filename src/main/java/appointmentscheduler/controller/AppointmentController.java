@@ -70,6 +70,12 @@ public class AppointmentController implements Initializable {
     int latestAppointmentId = 0;
     AlertUtil alertUtil = new AlertUtil();
 
+    /**
+     * Initializes the form with data from the provided appointment.
+     *
+     * @param appointment The appointment object to use to initialize the form.
+     * @throws SQLException If a database error occurs.
+     */
     public void initializeForm(Appointments appointment) throws SQLException {
         ContactDao contactDao = new ContactDao();
         AppointmentDao appointmentDao = new AppointmentDao();
@@ -97,6 +103,12 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Handles adding or updating an appointment when the save button is clicked.
+     *
+     * @param event The event that triggered this method.
+     * @throws IOException If an error occurs during the screen transition.
+     */
     @FXML
     public void addAppointment(ActionEvent event) throws IOException {
         int appointmentId = Integer.parseInt(appointmentIDField.getText());
@@ -135,6 +147,13 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Checks whether the provided start and end times are within business hours.
+     *
+     * @param start The start time of the appointment.
+     * @param end The end time of the appointment.
+     * @return True if the appointment is within business hours, false otherwise.
+     */
     private boolean checkBusinessHours(LocalDateTime start, LocalDateTime end) {
         LocalTime businessStart = LocalTime.of(8, 0);
         LocalTime businessEnd = LocalTime.of(22, 0);
@@ -154,6 +173,14 @@ public class AppointmentController implements Initializable {
         return false;
     }
 
+    /**
+     * Checks whether the provided start and end times overlap with any existing appointments for the specified customer.
+     *
+     * @param startDateTime The start time of the appointment.
+     * @param endDateTime The end time of the appointment.
+     * @param customerId The ID of the customer.
+     * @return True if no overlapping appointments are found, false otherwise.
+     */
     private boolean checkOverlappingAppointments(LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId) {
         for (Appointments appointment : allAppointments) {
             if (appointment.getCustomerId() == customerId) {
@@ -167,6 +194,12 @@ public class AppointmentController implements Initializable {
         return true;
     }
 
+    /**
+     * Handles exiting to the main view screen when the exit button is clicked.
+     *
+     * @param event The event that triggered this method.
+     * @throws IOException If an error occurs during the screen transition.
+     */
     @FXML
     public void exitToMainViewAction(ActionEvent event) throws IOException {
         Pane mainScreen = FXMLLoader.load(getClass().getResource("/MainView.fxml"));

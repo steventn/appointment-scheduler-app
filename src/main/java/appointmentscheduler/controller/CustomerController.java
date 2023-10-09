@@ -14,9 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -49,14 +47,17 @@ public class CustomerController implements Initializable {
     private ComboBox<String> countryField;
 
     @FXML
-    private Button saveButton;
-
-    @FXML
     private TextField customerPhoneNumberField;
 
     ObservableList<FirstLevelDivisions> allFirstLevelDivisions;
     int latestCustomerId = 0;
 
+    /**
+     * Initializes the form with data from the provided customer.
+     *
+     * @param customer The customer to use to initialize the form.
+     * @throws SQLException If a database error occurs.
+     */
     public void initializeForm(Customers customer) throws SQLException {
         CustomerDao customerDao = new CustomerDao();
         latestCustomerId = customerDao.getLatestCustomerId() + 1;
@@ -78,6 +79,12 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Handles adding or updating a customer when the save button is clicked.
+     *
+     * @param event The event that triggered this method.
+     * @throws Exception If a database or runtime error occurs.
+     */
     @FXML
     public void addCustomer(ActionEvent event) throws Exception {
         String divisionName = firstLevelDivisionField.getValue();
@@ -118,6 +125,12 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Handles exiting to the main view screen when the exit button is clicked.
+     *
+     * @param event The event that triggered this method.
+     * @throws IOException If an error occurs during the screen transition.
+     */
     @FXML
     public void exitToMainViewAction(ActionEvent event) throws IOException {
         Pane mainScreen = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
@@ -143,7 +156,6 @@ public class CustomerController implements Initializable {
             countryField.setItems(allCountryNames);
             firstLevelDivisionField.setItems(allFirstLevelDivisionNames);
 
-            // Event listener created to dynamically assign First Level Divisions with selected Country
             countryField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     try {
