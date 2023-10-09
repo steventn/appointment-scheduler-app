@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 import static appointmentscheduler.helper.DBConnection.connection;
 
 public class AppointmentDao {
-    public static Appointments getAppointment(int userId) throws SQLException {
+    public static Appointments getAppointmentByCustomerId(int customerId) throws SQLException {
         Appointments appointmentResult = null;
         try {
-            String sqlStatement = "select * FROM appointments WHERE User_ID  = ?";
+            String sqlStatement = "select * FROM appointments WHERE Customer_ID  = ?";
             try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-                statement.setInt(1, userId);
+                statement.setInt(1, customerId);
                 ResultSet result = statement.executeQuery();
 
                 while (result.next()) {
@@ -98,10 +98,10 @@ public class AppointmentDao {
     }
 
     public int getLatestAppointmentId() throws SQLException {
-        String getLastCustomerId = "SELECT Appointment_ID FROM appointments " +
+        String getLastestAppointmentId = "SELECT Appointment_ID FROM appointments " +
                 "ORDER BY Appointment_ID DESC LIMIT 1";
         int appointmentId = 0;
-        try (PreparedStatement customerStatement = connection.prepareStatement(getLastCustomerId);
+        try (PreparedStatement customerStatement = connection.prepareStatement(getLastestAppointmentId);
              ResultSet resultSet = customerStatement.executeQuery()) {
             if (resultSet.next()) {
                 appointmentId = resultSet.getInt("Appointment_ID");
@@ -110,8 +110,12 @@ public class AppointmentDao {
         return appointmentId;
     }
 
-    public static Users deleteAppointment(String username) throws SQLException {
-        return null;
+    public void deleteAppointment(int appointmentId) throws SQLException {
+        String deleteAppointmentSQL = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(deleteAppointmentSQL)) {
+            statement.setInt(1, appointmentId);
+            statement.executeUpdate();
+        }
     }
 
     private static Appointments createAppointmentsFromResultSet(ResultSet resultSet) throws SQLException {

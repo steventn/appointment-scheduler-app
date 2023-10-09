@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+import static appointmentscheduler.helper.DBConnection.connection;
+
 public class CustomerDao {
 
     private static final Connection connection = DBConnection.connection;
@@ -68,6 +70,14 @@ public class CustomerDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteCustomer(int customerId) throws SQLException {
+        String deleteCustomerSQL = "DELETE FROM customers WHERE Customer_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(deleteCustomerSQL)) {
+            statement.setInt(1, customerId);
+            statement.executeUpdate();
         }
     }
 

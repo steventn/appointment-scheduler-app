@@ -129,6 +129,7 @@ public class AppointmentController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void exitToMainViewAction(ActionEvent event) throws IOException {
         Pane mainScreen = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
@@ -148,9 +149,6 @@ public class AppointmentController implements Initializable {
         try {
             allAppointments = appointmentDao.getAllAppointments();
             ObservableList<Contacts> allContacts = contactDao.getAllContacts();
-//            ObservableList<String> allContactNames = allContacts.stream()
-//                    .map(Contacts::getContactName)
-//                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             ObservableList<Customers> allCustomers = customerDao.getAllCustomers();
             ObservableList<Integer> allCustomerIds = allCustomers.stream()

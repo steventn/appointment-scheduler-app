@@ -2,6 +2,7 @@ package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.CustomerDao;
+import appointmentscheduler.helper.ErrorUtil;
 import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.Customers;
 import static appointmentscheduler.helper.DBConnection.connection;
@@ -99,19 +100,11 @@ public class MainScreenController implements Initializable {
     private TableColumn<Appointments, Integer> userIDColumn;
 
     @FXML
-    private Button deleteAppointmentButton;
-
-    @FXML
     private Button modifyAppointmentButton;
-
-    @FXML
-    private Button addAppointmentButton;
-
-    @FXML
-    private Button exitButton;
 
     private ObservableList<Customers> customersList = FXCollections.observableArrayList();
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    ErrorUtil errorUtil = new ErrorUtil();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -193,6 +186,48 @@ public class MainScreenController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    @FXML
+    public void setDeleteAppointmentButton() throws SQLException {
+        AppointmentDao appointmentDao = new AppointmentDao();
+        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            errorUtil.displayAlert("alert.appointmentError.appointmentError","alert.appointmentError.noAppointmentSelected", "alert.loginError.invalidCredentialsContext");
+        } else {
+            selectedAppointment= AppointmentDao.getAppointmentByCustomerId(selectedAppointment.getCustomerId());
+            appointmentDao.deleteAppointment(selectedAppointment.getAppointmentId());
+            refreshWindow();
+        }
+
+    }
+
+    @FXML
+    public void setDeleteCustomerButton() throws SQLException {
+        CustomerDao customerDao = new CustomerDao();
+        Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedCustomer == null) {
+            errorUtil.displayAlert("alert.customerError.customerError","alert.customerError.noCustomerSelected", "alert.loginError.invalidCredentialsContext");
+        } else {
+            Appointments activeAppointment = AppointmentDao.getAppointmentByCustomerId(selectedCustomer.getCustomerId());
+            if (activeAppointment == null) {
+                customerDao.deleteCustomer(selectedCustomer.getCustomerId());
+                refreshWindow();
+            } else {
+                errorUtil.displayAlert("alert.customerError.customerError","alert.customerError.activeAppointment", "alert.loginError.invalidCredentialsContext");
+            }
+        }
+
+    }
+
+    private void refreshWindow() throws SQLException {
+        AppointmentDao appointmentDao = new AppointmentDao();
+        CustomerDao customerDao = new CustomerDao();
+        appointmentsList = appointmentDao.getAllAppointments();
+        customersList = customerDao.getAllCustomers();
+        appointmentsTableView.setItems(appointmentsList);
+        customersTableView.setItems(customersList);
     }
 
     @FXML

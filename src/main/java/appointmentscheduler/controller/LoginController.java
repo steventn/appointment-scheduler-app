@@ -1,6 +1,7 @@
 package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.UserDao;
+import appointmentscheduler.helper.ErrorUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,23 +57,21 @@ public class LoginController implements Initializable {
 
     @FXML
     private void loginStatus(ActionEvent event) {
+        ErrorUtil errorUtil = new ErrorUtil();
         try {
-            Locale userLocale = Locale.getDefault();
-            this.messages = ResourceBundle.getBundle("error_message", userLocale);
-
             String username_field = usernameField.getText();
             String password_field = passwordField.getText();
             if (username_field.isEmpty() || password_field.isEmpty()) {
-                displayAlert("alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
+                errorUtil.displayAlert("alert.loginError.title", "alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
                 return;
             }
             int loginResult = UserDao.validateUser(username_field, password_field);
             switch (loginResult) {
                 case -1:
-                    displayAlert("alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
+                    errorUtil.displayAlert("alert.loginError.title", "alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
                     break;
                 case -2:
-                    displayAlert("alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
+                    errorUtil.displayAlert("alert.loginError.title", "alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
                     break;
                 default:
                     navigateToMainView(event);
@@ -81,18 +80,6 @@ public class LoginController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void displayAlert(String headerTextKey, String contentTextKey) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
-        String titleKey = "alert.loginError.title";
-
-        alert.setTitle(this.messages.getString(titleKey));
-        alert.setHeaderText(this.messages.getString(headerTextKey));
-        alert.setContentText(this.messages.getString(contentTextKey));
-
-        alert.showAndWait();
     }
 
     private void navigateToMainView(ActionEvent event) throws Exception {
