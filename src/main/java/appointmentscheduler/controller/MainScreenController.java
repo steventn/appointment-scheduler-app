@@ -2,10 +2,9 @@ package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.CustomerDao;
-import appointmentscheduler.helper.ErrorUtil;
+import appointmentscheduler.helper.AlertUtil;
 import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.Customers;
-import static appointmentscheduler.helper.DBConnection.connection;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,13 +19,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
@@ -104,7 +101,7 @@ public class MainScreenController implements Initializable {
 
     private ObservableList<Customers> customersList = FXCollections.observableArrayList();
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
-    ErrorUtil errorUtil = new ErrorUtil();
+    AlertUtil alertUtil = new AlertUtil();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -193,11 +190,12 @@ public class MainScreenController implements Initializable {
         AppointmentDao appointmentDao = new AppointmentDao();
         Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
         if (selectedAppointment == null) {
-            errorUtil.displayAlert("alert.appointmentError.appointmentError","alert.appointmentError.noAppointmentSelected", "alert.loginError.invalidCredentialsContext");
+            alertUtil.displayErrorAlert("alert.appointmentError.appointmentError","alert.appointmentError.noAppointmentSelected", "alert.loginError.invalidCredentialsContext");
         } else {
             selectedAppointment= AppointmentDao.getAppointmentByCustomerId(selectedAppointment.getCustomerId());
             appointmentDao.deleteAppointment(selectedAppointment.getAppointmentId());
             refreshWindow();
+            alertUtil.displaySuccessAlert("alert.success.title", "alert.confirmation.confirmation", "alert.appointmentSuccess.deletion");
         }
 
     }
@@ -208,14 +206,15 @@ public class MainScreenController implements Initializable {
         Customers selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
 
         if (selectedCustomer == null) {
-            errorUtil.displayAlert("alert.customerError.customerError","alert.customerError.noCustomerSelected", "alert.loginError.invalidCredentialsContext");
+            alertUtil.displayErrorAlert("alert.customerError.customerError","alert.customerError.noCustomerSelected", "alert.loginError.invalidCredentialsContext");
         } else {
             Appointments activeAppointment = AppointmentDao.getAppointmentByCustomerId(selectedCustomer.getCustomerId());
             if (activeAppointment == null) {
                 customerDao.deleteCustomer(selectedCustomer.getCustomerId());
                 refreshWindow();
+                alertUtil.displaySuccessAlert("alert.success.title", "alert.confirmation.confirmation", "alert.customerSuccess.deletion");
             } else {
-                errorUtil.displayAlert("alert.customerError.customerError","alert.customerError.activeAppointment", "alert.loginError.invalidCredentialsContext");
+                alertUtil.displayErrorAlert("alert.customerError.customerError","alert.customerError.activeAppointment", "alert.loginError.invalidCredentialsContext");
             }
         }
 

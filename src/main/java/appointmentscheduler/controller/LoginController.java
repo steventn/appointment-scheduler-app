@@ -1,14 +1,13 @@
 package appointmentscheduler.controller;
 
 import appointmentscheduler.dao.UserDao;
-import appointmentscheduler.helper.ErrorUtil;
+import appointmentscheduler.helper.AlertUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -57,21 +56,21 @@ public class LoginController implements Initializable {
 
     @FXML
     private void loginStatus(ActionEvent event) {
-        ErrorUtil errorUtil = new ErrorUtil();
+        AlertUtil alertUtil = new AlertUtil();
         try {
             String username_field = usernameField.getText();
             String password_field = passwordField.getText();
             if (username_field.isEmpty() || password_field.isEmpty()) {
-                errorUtil.displayAlert("alert.loginError.title", "alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
+                alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
                 return;
             }
             int loginResult = UserDao.validateUser(username_field, password_field);
             switch (loginResult) {
                 case -1:
-                    errorUtil.displayAlert("alert.loginError.title", "alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
+                    alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
                     break;
                 case -2:
-                    errorUtil.displayAlert("alert.loginError.title", "alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
+                    alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
                     break;
                 default:
                     navigateToMainView(event);
