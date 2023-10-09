@@ -1,7 +1,10 @@
 package appointmentscheduler.controller;
 
+import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.UserDao;
 import appointmentscheduler.helper.AlertUtil;
+import appointmentscheduler.model.Appointments;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +19,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -52,7 +60,7 @@ public class LoginController implements Initializable {
 
     private ResourceBundle messages;
 
-    private Users userModel;
+    AlertUtil alertUtil = new AlertUtil();
 
     @FXML
     private void loginStatus(ActionEvent event) {
@@ -74,11 +82,29 @@ public class LoginController implements Initializable {
                     break;
                 default:
                     navigateToMainView(event);
+                    checkForUpcomingAppointment();
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void checkForUpcomingAppointment() throws SQLException {
+        AppointmentDao appointmentDao = new AppointmentDao();
+        ObservableList<Appointments> allAppointments = appointmentDao.getAllAppointments();
+
+        for (Appointments appointment : allAppointments) {
+            LocalDateTime appointmentTime = appointment.getStart();
+            ZonedDateTime localAppointmentTime = appointmentTime.atZone(ZoneId.systemDefault());
+            ZonedDateTime localTime = ZonedDateTime.now();
+            Duration duration = Duration.between(localAppointmentTime, localTime).abs();
+
+            if (duration.compareTo(Duration.of(15, ChronoUnit.MINUTES)) <= 0) {
+                alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.upcomingAppointment", "alert.appointmentSuccess.upcomingAppointment");
+            }
+        }
+        alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.noUpcomingAppointment", "alert.appointmentSuccess.noUpcomingAppointment");
     }
 
     private void navigateToMainView(ActionEvent event) throws Exception {

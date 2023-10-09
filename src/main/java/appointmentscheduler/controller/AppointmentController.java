@@ -4,6 +4,7 @@ import appointmentscheduler.dao.AppointmentDao;
 import appointmentscheduler.dao.ContactDao;
 import appointmentscheduler.dao.CustomerDao;
 import appointmentscheduler.dao.UserDao;
+import appointmentscheduler.helper.AlertUtil;
 import appointmentscheduler.helper.TimeUtil;
 import appointmentscheduler.model.*;
 import javafx.collections.FXCollections;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -47,9 +49,6 @@ public class AppointmentController implements Initializable {
     private TextField typeField;
 
     @FXML
-    private Button saveButton;
-
-    @FXML
     private DatePicker startDateField;
 
     @FXML
@@ -69,7 +68,7 @@ public class AppointmentController implements Initializable {
 
     ObservableList<Appointments> allAppointments = null;
     int latestAppointmentId = 0;
-
+    AlertUtil alertUtil = new AlertUtil();
 
     public void initializeForm(Appointments appointment) throws SQLException {
         ContactDao contactDao = new ContactDao();
@@ -118,16 +117,54 @@ public class AppointmentController implements Initializable {
         Appointments newAppointment = new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, finalStart, finalEnd);
         AppointmentDao appointmentDao = new AppointmentDao();
 
-        try {
-            if (appointmentId < latestAppointmentId) {
-                appointmentDao.updateAppointment(newAppointment);
-            } else {
-                appointmentDao.addAppointment(newAppointment);
+        if (!checkBusinessHours(finalStart, finalEnd)) {
+            alertUtil.displayErrorAlert("alert.appointmentError.appointmentError", "alert.appointmentError.outsideBusinessHours", "alert.loginError.invalidCredentialsContext");
+        } else if (!checkOverlappingAppointments(finalStart, finalEnd, customerId)) {
+            alertUtil.displayErrorAlert("alert.appointmentError.appointmentError", "alert.appointmentError.overlappingAppointment", "alert.loginError.invalidCredentialsContext");
+        } else {
+            try {
+                if (appointmentId < latestAppointmentId) {
+                    appointmentDao.updateAppointment(newAppointment);
+                } else {
+                    appointmentDao.addAppointment(newAppointment);
+                }
+                exitToMainViewAction(event);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            exitToMainViewAction(event);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+    }
+
+    private boolean checkBusinessHours(LocalDateTime start, LocalDateTime end) {
+        LocalTime businessStart = LocalTime.of(8, 0);
+        LocalTime businessEnd = LocalTime.of(22, 0);
+        DayOfWeek startDayOfWeek = start.getDayOfWeek();
+        DayOfWeek endDayOfWeek = end.getDayOfWeek();
+
+        boolean startIsWeekend = startDayOfWeek == DayOfWeek.SATURDAY || startDayOfWeek == DayOfWeek.SUNDAY;
+        boolean endIsWeekend = endDayOfWeek == DayOfWeek.SATURDAY || endDayOfWeek == DayOfWeek.SUNDAY;
+
+        if (startIsWeekend || endIsWeekend) {
+            return false;
+        }
+
+        if (!start.toLocalTime().isBefore(businessStart) && !end.toLocalTime().isAfter(businessEnd)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkOverlappingAppointments(LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId) {
+        for (Appointments appointment : allAppointments) {
+            if (appointment.getCustomerId() == customerId) {
+                LocalDateTime existingStart = appointment.getStart();
+                LocalDateTime existingEnd = appointment.getEnd();
+                if (startDateTime.isBefore(existingEnd) && endDateTime.isAfter(existingStart)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @FXML

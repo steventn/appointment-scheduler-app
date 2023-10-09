@@ -25,8 +25,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -111,52 +115,6 @@ public class MainScreenController implements Initializable {
     private ObservableList<Customers> customersList = FXCollections.observableArrayList();
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
     AlertUtil alertUtil = new AlertUtil();
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        allAppointmentsFilter.setSelected(true);
-        
-        IDColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        stateProvinceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        firstLevelDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
-        countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
-        customersTableView.setItems(customersList);
-
-        appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-        customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        appointmentsTableView.setItems(appointmentsList);
-
-        customersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            modifyCustomerButton.setDisable(newSelection == null);
-        });
-
-        appointmentsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            modifyAppointmentButton.setDisable(newSelection == null);
-        });
-
-        try {
-            CustomerDao customersDAO = new CustomerDao();
-            AppointmentDao appointmentDao = new AppointmentDao();
-            ObservableList<Customers> allCustomers = customersDAO.getAllCustomers();
-            ObservableList<Appointments> allAppointments = appointmentDao.getAllAppointments();
-            customersList.addAll(allCustomers);
-            appointmentsList.addAll(allAppointments);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void displayCurrentMonthAppointments() {
@@ -280,5 +238,51 @@ public class MainScreenController implements Initializable {
     private void exitApplication(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        allAppointmentsFilter.setSelected(true);
+
+        IDColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        stateProvinceColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        firstLevelDivisionColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+        countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
+        customersTableView.setItems(customersList);
+
+        appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endDateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+        customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        appointmentsTableView.setItems(appointmentsList);
+
+        customersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            modifyCustomerButton.setDisable(newSelection == null);
+        });
+
+        appointmentsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            modifyAppointmentButton.setDisable(newSelection == null);
+        });
+
+        try {
+            CustomerDao customersDAO = new CustomerDao();
+            AppointmentDao appointmentDao = new AppointmentDao();
+            ObservableList<Customers> allCustomers = customersDAO.getAllCustomers();
+            ObservableList<Appointments> allAppointments = appointmentDao.getAllAppointments();
+            customersList.addAll(allCustomers);
+            appointmentsList.addAll(allAppointments);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
