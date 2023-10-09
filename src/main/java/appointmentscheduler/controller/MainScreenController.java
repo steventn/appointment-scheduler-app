@@ -116,6 +116,9 @@ public class MainScreenController implements Initializable {
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
     AlertUtil alertUtil = new AlertUtil();
 
+    /**
+     * Filters the appointments to display only those in the current month.
+     */
     @FXML
     public void displayCurrentMonthAppointments() {
         LocalDate now = LocalDate.now();
@@ -134,6 +137,9 @@ public class MainScreenController implements Initializable {
         appointmentsTableView.setItems(appointmentsInCurrentMonth);
     }
 
+    /**
+     * Filters the appointments to display only those in the current week.
+     */
     public void displayCurrentWeekAppointments() {
         LocalDate now = LocalDate.now();
         int currentWeek = now.get(WeekFields.of(Locale.getDefault()).weekOfYear());
@@ -151,6 +157,13 @@ public class MainScreenController implements Initializable {
         appointmentsTableView.setItems(appointmentsInCurrentWeek);
     }
 
+    /**
+     * Opens the customer form for adding or modifying a customer.
+     *
+     * @param event The event that triggered this method.
+     * @throws IOException If an error occurs during the screen transition.
+     * @throws SQLException If a database error occurs.
+     */
     @FXML
     public void openCustomerForm(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/CustomerForm.fxml"));
@@ -170,6 +183,13 @@ public class MainScreenController implements Initializable {
         window.show();
     }
 
+    /**
+     * Opens the appointment form for adding or modifying an appointment.
+     *
+     * @param event The event that triggered this method.
+     * @throws IOException If an error occurs during the screen transition.
+     * @throws SQLException If a database error occurs.
+     */
     @FXML
     public void openAppointmentForm(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AppointmentForm.fxml"));
@@ -189,6 +209,11 @@ public class MainScreenController implements Initializable {
         window.show();
     }
 
+    /**
+     * Deletes the selected appointment and refreshes the window.
+     *
+     * @throws SQLException If a database error occurs.
+     */
     @FXML
     public void setDeleteAppointmentButton() throws SQLException {
         AppointmentDao appointmentDao = new AppointmentDao();
@@ -204,6 +229,11 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * Deletes the selected customer and refreshes the window.
+     *
+     * @throws SQLException If a database error occurs.
+     */
     @FXML
     public void setDeleteCustomerButton() throws SQLException {
         CustomerDao customerDao = new CustomerDao();
@@ -224,6 +254,11 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * Refreshes the window by reloading the appointments and customers.
+     *
+     * @throws SQLException If a database error occurs.
+     */
     @FXML
     private void refreshWindow() throws SQLException {
         AppointmentDao appointmentDao = new AppointmentDao();
@@ -234,6 +269,11 @@ public class MainScreenController implements Initializable {
         customersTableView.setItems(customersList);
     }
 
+    /**
+     * Exits the application when the exit button is clicked.
+     *
+     * @param event The event that triggered this method.
+     */
     @FXML
     private void exitApplication(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

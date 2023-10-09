@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import appointmentscheduler.model.Users;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -62,6 +61,11 @@ public class LoginController implements Initializable {
 
     AlertUtil alertUtil = new AlertUtil();
 
+    /**
+     * Handles the login process when the sign in button is clicked.
+     *
+     * @param event The event that triggered this method.
+     */
     @FXML
     private void loginStatus(ActionEvent event) {
         AlertUtil alertUtil = new AlertUtil();
@@ -90,6 +94,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Checks for any upcoming appointments and displays an alert if any are found.
+     *
+     * @throws SQLException If a database error occurs.
+     */
     public void checkForUpcomingAppointment() throws SQLException {
         AppointmentDao appointmentDao = new AppointmentDao();
         ObservableList<Appointments> allAppointments = appointmentDao.getAllAppointments();
@@ -107,6 +116,12 @@ public class LoginController implements Initializable {
         alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.noUpcomingAppointment", "alert.appointmentSuccess.noUpcomingAppointment");
     }
 
+    /**
+     * Navigates to the main view screen.
+     *
+     * @param event The event that triggered this method.
+     * @throws Exception If an error occurs during the screen transition.
+     */
     private void navigateToMainView(ActionEvent event) throws Exception {
         Pane mainView = FXMLLoader.load(getClass().getResource("/MainView.fxml"));
         Scene scene = new Scene(mainView);
@@ -115,6 +130,11 @@ public class LoginController implements Initializable {
         window.show();
     }
 
+    /**
+     * Exits the application when the exit button is clicked.
+     *
+     * @param event The event that triggered this method.
+     */
     @FXML
     private void exitApplication(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
