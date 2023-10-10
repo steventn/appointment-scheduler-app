@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 public class ReportController implements Initializable {
     @FXML
-    private TableView<ReportsB> reportATableView;
+    private TableView<Appointments> reportATableView;
 
     @FXML
     private TableColumn<ReportsB, Integer> appointmentIDColumnA;
@@ -81,6 +81,16 @@ public class ReportController implements Initializable {
         ReportDao reportDao = new ReportDao();
         ObservableList<ReportsB> reportBAppointments = reportDao.getTotalAppointmentsByTypeMonth();
         ObservableList<ReportsC> reportCAppointments = reportDao.getTotalAppointmentsByDuration();
+        ObservableList<Appointments> reportAAppointments = reportDao.getTotalAppointmentsSortedByCustomer();
+
+        appointmentIDColumnA.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        titleColumnA.setCellValueFactory(new PropertyValueFactory<>("title"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        startDateTimeColumnA.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endDateTimeColumnA.setCellValueFactory(new PropertyValueFactory<>("end"));
+        customerIDColumnA.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        reportATableView.setItems(reportAAppointments);
 
         monthColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
         typeColumnB.setCellValueFactory(new PropertyValueFactory<>("type"));

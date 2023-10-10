@@ -119,7 +119,7 @@ public class AppointmentDao {
         }
     }
 
-    private static Appointments createAppointmentsFromResultSet(ResultSet resultSet) throws SQLException {
+    public static Appointments createAppointmentsFromResultSet(ResultSet resultSet) throws SQLException {
         int appointmentId = resultSet.getInt("Appointment_ID");
         int customerId = resultSet.getInt("Customer_ID");
         int userId = resultSet.getInt("User_ID");
