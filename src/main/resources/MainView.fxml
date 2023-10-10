@@ -65,11 +65,12 @@
             <fx:define>
                <ToggleGroup fx:id="filter" />
             </fx:define>
-            <RadioButton fx:id="thisMonthFilter" layoutX="709.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentMonthAppointments" text="This Month" toggleGroup="$filter" />
+            <RadioButton fx:id="thisMonthFilter" layoutX="709.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentMonthAppointments" text="This Month" />
             <RadioButton fx:id="thisWeekFilter" layoutX="803.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentWeekAppointments" text="This Week" toggleGroup="$filter" />
             <RadioButton fx:id="allAppointmentsFilter" layoutX="658.0" layoutY="11.0" mnemonicParsing="false" onAction="#refreshWindow" text="All" toggleGroup="$filter" />
          </children>
       </AnchorPane>
       <Button layoutX="931.0" layoutY="661.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
+      <Button layoutX="457.0" layoutY="664.0" mnemonicParsing="false" onAction="#openReports" text="Reports" />
    </children>
 </AnchorPane>

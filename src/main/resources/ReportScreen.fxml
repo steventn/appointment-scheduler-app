@@ -16,15 +16,15 @@
             </font></Text>
         <AnchorPane layoutX="33.0" layoutY="46.0" prefHeight="190.0" prefWidth="915.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 1;">
             <children>
-                <TableView fx:id="appointmentsTableView" layoutX="18.0" layoutY="28.0" prefHeight="150.0" prefWidth="866.0">
+                <TableView fx:id="reportATableView" layoutX="18.0" layoutY="28.0" prefHeight="150.0" prefWidth="866.0">
                     <columns>
-                        <TableColumn fx:id="appointmentIDColumn" prefWidth="100.0" text="Appointment ID" />
-                        <TableColumn fx:id="titleColumn" prefWidth="63.0" text="Title" />
+                        <TableColumn fx:id="appointmentIDColumnA" prefWidth="100.0" text="Appointment ID" />
+                        <TableColumn fx:id="titleColumnA" prefWidth="63.0" text="Title" />
                         <TableColumn fx:id="typeColumn" minWidth="9.0" prefWidth="45.0" text="Type" />
                         <TableColumn fx:id="descriptionColumn" prefWidth="90.0" text="Description" />
-                        <TableColumn fx:id="startDateTimeColumn" prefWidth="140.0" text="Start Date and Time" />
-                        <TableColumn fx:id="endDateTimeColumn" prefWidth="140.0" text="End Date and Time" />
-                        <TableColumn fx:id="customerIDColumn" prefWidth="100.0" text="Customer ID" />
+                        <TableColumn fx:id="startDateTimeColumnA" prefWidth="140.0" text="Start Date and Time" />
+                        <TableColumn fx:id="endDateTimeColumnA" prefWidth="140.0" text="End Date and Time" />
+                        <TableColumn fx:id="customerIDColumnA" prefWidth="100.0" text="Customer ID" />
                     </columns>
                 </TableView>
                 <Label layoutX="18.0" layoutY="5.0" prefHeight="20.0" prefWidth="105.0" text="Report A ">
@@ -32,17 +32,17 @@
                         <Font name="System Bold" size="14.0" />
                     </font></Label>
                 <fx:define>
-                    <ToggleGroup fx:id="filter" />
+<!--                    <ToggleGroup fx:id="filter" />-->
                 </fx:define>
             </children>
         </AnchorPane>
         <AnchorPane layoutX="35.0" layoutY="245.0" prefHeight="190.0" prefWidth="915.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 1;">
             <children>
-                <TableView fx:id="customersTableView" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
+                <TableView fx:id="reportBTableView" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
                     <columns>
-                        <TableColumn fx:id="IDColumn" prefWidth="81.15081405639648" text="Month" />
-                        <TableColumn fx:id="nameColumn" prefWidth="69.84916687011719" text="Type" />
-                        <TableColumn fx:id="addressColumn" prefWidth="127.0" text="Total Appointments" />
+                        <TableColumn fx:id="monthColumn" prefWidth="81.15081405639648" text="Month" />
+                        <TableColumn fx:id="typeColumnB" prefWidth="69.84916687011719" text="Type" />
+                        <TableColumn fx:id="totalAppointmentsColumnB" prefWidth="127.0" text="Total Appointments" />
                     </columns>
                 </TableView>
                 <Label layoutX="18.0" layoutY="5.0" prefHeight="20.0" prefWidth="82.0" text="Report B">
@@ -53,11 +53,11 @@
         </AnchorPane>
       <AnchorPane layoutX="35.0" layoutY="450.0" prefHeight="190.0" prefWidth="915.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 1;">
          <children>
-            <TableView fx:id="customersTableView1" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
+            <TableView fx:id="reportCTableView" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
                <columns>
-                  <TableColumn fx:id="IDColumn1" prefWidth="81.15081405639648" text="Month" />
-                  <TableColumn fx:id="nameColumn1" prefWidth="69.84916687011719" text="Type" />
-                  <TableColumn fx:id="addressColumn1" prefWidth="127.0" text="Total Appointments" />
+                  <TableColumn fx:id="customerColumnC" prefWidth="81.15081405639648" text="Customer" />
+                  <TableColumn fx:id="monthColumnC" prefWidth="69.84916687011719" text="Month" />
+                  <TableColumn fx:id="durationColumn" prefWidth="127.0" text="Appointment Duration" />
                </columns>
             </TableView>
             <Label layoutX="18.0" layoutY="5.0" prefHeight="20.0" prefWidth="82.0" text="Report C">

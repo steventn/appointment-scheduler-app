@@ -20,6 +20,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -251,7 +252,6 @@ public class MainScreenController implements Initializable {
                 alertUtil.displayErrorAlert("alert.customerError.customerError","alert.customerError.activeAppointment", "alert.loginError.invalidCredentialsContext");
             }
         }
-
     }
 
     /**
@@ -267,6 +267,20 @@ public class MainScreenController implements Initializable {
         customersList = customerDao.getAllCustomers();
         appointmentsTableView.setItems(appointmentsList);
         customersTableView.setItems(customersList);
+    }
+
+    /**
+     * Opens the report view when report button is clicked.
+     *
+     * @param event The event that triggered this method.
+     */
+    @FXML
+    private void openReports(ActionEvent event) throws IOException {
+        Pane mainView = FXMLLoader.load(getClass().getResource("/ReportScreen.fxml"));
+        Scene scene = new Scene(mainView);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.show();
     }
 
     /**
