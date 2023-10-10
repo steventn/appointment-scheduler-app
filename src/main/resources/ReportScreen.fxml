@@ -41,8 +41,8 @@
                 <TableView fx:id="reportBTableView" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
                     <columns>
                         <TableColumn fx:id="monthColumn" prefWidth="81.15081405639648" text="Month" />
-                        <TableColumn fx:id="typeColumnB" prefWidth="69.84916687011719" text="Type" />
-                        <TableColumn fx:id="totalAppointmentsColumnB" prefWidth="127.0" text="Total Appointments" />
+                        <TableColumn fx:id="typeColumnB" prefWidth="181.0" text="Type" />
+                        <TableColumn fx:id="totalAppointmentsColumnB" prefWidth="146.0" text="Total Appointments" />
                     </columns>
                 </TableView>
                 <Label layoutX="18.0" layoutY="5.0" prefHeight="20.0" prefWidth="82.0" text="Report B">

@@ -135,29 +135,5 @@ public class AppointmentDao {
 
         return new Appointments(appointmentId, customerId, userId, contactId, title, description, location, type, createdBy, lastUpdatedBy, start, end);
     }
-
-    public ObservableList<Appointments> getTotalAppointmentsByTypeMonth() {
-        ObservableList<Appointments> appointmentList = FXCollections.observableArrayList();
-        try {
-            String getReportASQL = "SELECT type, EXTRACT(MONTH FROM start) as month, COUNT(*) as total_appointments " +
-                    "FROM appointments " +
-                    "GROUP BY type, month";
-            try (PreparedStatement statement = connection.prepareStatement(getReportASQL);
-                 ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Appointments appointments = createAppointmentsFromResultSet(resultSet);
-                    appointmentList.add(appointments);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return appointmentList;
-    }
-
-    //    private static Appointments createAppointmentReportBFromResultSet(ResultSet resultSet) throws SQLException {
-//
-//    }
-
 }
 

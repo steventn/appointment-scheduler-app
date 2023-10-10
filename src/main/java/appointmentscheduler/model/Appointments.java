@@ -22,8 +22,6 @@ public class Appointments {
     private LocalTime endTime;
     private LocalDate endDate;
 
-
-
     public Appointments(int appointmentId, int customerId, int userId, int contactId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
