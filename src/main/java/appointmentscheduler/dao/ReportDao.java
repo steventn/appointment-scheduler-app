@@ -1,8 +1,7 @@
 package appointmentscheduler.dao;
 
-import appointmentscheduler.model.Appointments;
-import appointmentscheduler.model.Reports;
-import appointmentscheduler.model.Users;
+import appointmentscheduler.model.ReportsB;
+import appointmentscheduler.model.ReportsC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,8 +12,8 @@ import java.sql.SQLException;
 import static appointmentscheduler.helper.DBConnection.connection;
 
 public class ReportDao {
-    public ObservableList<Reports> getTotalAppointmentsByTypeMonth() {
-        ObservableList<Reports> reportsList = FXCollections.observableArrayList();
+    public ObservableList<ReportsB> getTotalAppointmentsByTypeMonth() {
+        ObservableList<ReportsB> reportsBList = FXCollections.observableArrayList();
         try {
             String getReportASQL = "SELECT type, EXTRACT(MONTH FROM start) as month, COUNT(*) as total_appointments " +
                     "FROM appointments " +
@@ -22,40 +21,47 @@ public class ReportDao {
             try (PreparedStatement statement = connection.prepareStatement(getReportASQL);
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Reports appointmentReports = createAppointmentReportBFromResultSet(resultSet);
-                    reportsList.add(appointmentReports);
+                    ReportsB appointmentReportsB = createAppointmentReportBFromResultSet(resultSet);
+                    reportsBList.add(appointmentReportsB);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return reportsList;
+        return reportsBList;
     }
 
-    public ObservableList<Reports> getTotalAppointmentsByDuration() {
-        ObservableList<Reports> reportsList = FXCollections.observableArrayList();
+    public ObservableList<ReportsC> getTotalAppointmentsByDuration() {
+        ObservableList<ReportsC> reportsCList = FXCollections.observableArrayList();
         try {
-            String getReportASQL = "SELECT MONTH(start) as month, customerId, AVG(TIMESTAMPDIFF(MINUTE, start, end)) as average_duration" +
+            String getReportASQL = "SELECT MONTH(start) as month, customer_id, AVG(TIMESTAMPDIFF(MINUTE, start, end)) as average_duration " +
                     "FROM appointments " +
-                    "GROUP BY MONTH(start), customerId;";
+                    "GROUP BY MONTH(start), customer_id";
             try (PreparedStatement statement = connection.prepareStatement(getReportASQL);
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Reports appointmentReports = createAppointmentReportBFromResultSet(resultSet);
-                    reportsList.add(appointmentReports);
+                    ReportsC appointmentReportsC = createAppointmentReportCFromResultSet(resultSet);
+                    reportsCList.add(appointmentReportsC);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return reportsList;
+        return reportsCList;
     }
 
-    private static Reports createAppointmentReportBFromResultSet(ResultSet resultSet) throws SQLException {
+    private static ReportsB createAppointmentReportBFromResultSet(ResultSet resultSet) throws SQLException {
         String month = resultSet.getString("month");
         String type = resultSet.getString("type");
         int totalAppointments = resultSet.getInt("total_appointments");
-        return new Reports(month, type, totalAppointments);
+        return new ReportsB(month, type, totalAppointments);
+    }
+
+    private static ReportsC createAppointmentReportCFromResultSet(ResultSet resultSet) throws SQLException {
+        String month = resultSet.getString("month");
+        String customerId = resultSet.getString("customer_id");
+        int averageDuration = resultSet.getInt("average_duration");
+        return new ReportsC(customerId, month, averageDuration);
     }
 
 }
