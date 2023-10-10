@@ -17,6 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -74,19 +77,23 @@ public class LoginController implements Initializable {
             String password_field = passwordField.getText();
             if (username_field.isEmpty() || password_field.isEmpty()) {
                 alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.emptyFields", "alert.loginError.emptyFieldsContext");
+                logActivity(username_field, false);
                 return;
             }
             int loginResult = UserDao.validateUser(username_field, password_field);
             switch (loginResult) {
                 case -1:
                     alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.invalidCredentials", "alert.loginError.invalidCredentialsContext");
+                    logActivity(username_field, false);
                     break;
                 case -2:
                     alertUtil.displayErrorAlert("alert.loginError.title", "alert.loginError.usernameNotFound", "alert.loginError.usernameNotFoundContext");
+                    logActivity(username_field, false);
                     break;
                 default:
                     navigateToMainView(event);
                     checkForUpcomingAppointment();
+                    logActivity(username_field, true);
                     break;
             }
         } catch (Exception e) {
@@ -139,6 +146,15 @@ public class LoginController implements Initializable {
     private void exitApplication(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    private void logActivity(String username, boolean success) {
+        String logEntry = LocalDateTime.now() + "\n - Username: " + username + " - Success: " + success + "\n\n";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("login_activity.txt", true))) {
+            writer.write(logEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
