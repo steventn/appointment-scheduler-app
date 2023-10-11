@@ -55,7 +55,7 @@
          <children>
             <TableView fx:id="reportCTableView" layoutX="18.0" layoutY="28.0" prefHeight="152.0" prefWidth="866.0">
                <columns>
-                  <TableColumn fx:id="customerColumnC" prefWidth="81.15081405639648" text="Customer" />
+                  <TableColumn fx:id="customerColumnC" prefWidth="81.15081405639648" text="Customer ID" />
                   <TableColumn fx:id="monthColumnC" prefWidth="69.84916687011719" text="Month" />
                   <TableColumn fx:id="durationColumn" prefWidth="153.0" text="Appointment Duration" />
                </columns>

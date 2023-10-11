@@ -1,17 +1,12 @@
 package appointmentscheduler.dao;
 
-import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.Contacts;
 import appointmentscheduler.helper.DBConnection;
-import appointmentscheduler.helper.Query;
 
-import appointmentscheduler.model.Customers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-
-import static appointmentscheduler.helper.DBConnection.connection;
 
 public class ContactDao {
 
@@ -30,7 +25,7 @@ public class ContactDao {
         return contactList;
     }
 
-    public Contacts getContact(int contactId) throws SQLException {
+    public Contacts getContact(int contactId) {
         Contacts contactResult = null;
         try {
             String sqlStatement = "select * FROM contacts WHERE Contact_ID  = ?";

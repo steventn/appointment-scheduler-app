@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The ReportController class controls the logic for the report screen.
+ */
 public class ReportController implements Initializable {
     @FXML
     private TableView<Appointments> reportATableView;
@@ -67,6 +70,12 @@ public class ReportController implements Initializable {
     @FXML
     private TableColumn<ReportsC, Integer> durationColumn;
 
+    /**
+     * Navigates to the main view screen.
+     *
+     * @param event The event that triggered this method.
+     * @throws Exception If an error occurs during the screen transition.
+     */
     @FXML
     private void navigateToMainView(ActionEvent event) throws Exception {
         Pane mainView = FXMLLoader.load(getClass().getResource("/MainView.fxml"));

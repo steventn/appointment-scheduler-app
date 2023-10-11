@@ -29,6 +29,9 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * The AppointmentController class controls the logic for the appointment form.
+ */
 public class AppointmentController implements Initializable {
     @FXML
     private TextField appointmentIDField;

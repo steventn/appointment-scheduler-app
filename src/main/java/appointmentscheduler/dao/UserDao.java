@@ -1,9 +1,6 @@
 package appointmentscheduler.dao;
 
-import appointmentscheduler.model.Contacts;
 import appointmentscheduler.model.Users;
-import appointmentscheduler.helper.DBConnection;
-import appointmentscheduler.helper.Query;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

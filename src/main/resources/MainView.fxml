@@ -20,10 +20,10 @@
          <children>
             <TableView fx:id="customersTableView" layoutX="18.0" layoutY="39.0" prefHeight="200.0" prefWidth="866.0">
                <columns>
-                  <TableColumn fx:id="IDColumn" prefWidth="52.254791259765625" text="Customer ID" />
+                  <TableColumn fx:id="IDColumn" prefWidth="52.254791259765625" text="ID" />
                   <TableColumn fx:id="nameColumn" prefWidth="98.24519348144531" text="Name" />
-                  <TableColumn fx:id="addressColumn" prefWidth="127.0" text="Address" />
                   <TableColumn fx:id="phoneNumberColumn" prefWidth="141.0" text="Phone Number" />
+                  <TableColumn fx:id="addressColumn" prefWidth="127.0" text="Address" />
                   <TableColumn fx:id="stateProvinceColumn" prefWidth="105.52322387695312" text="State/Province" />
                   <TableColumn fx:id="postalCodeColumn" prefWidth="80.866943359375" text="Postal Code" />
                   <TableColumn fx:id="firstLevelDivisionColumn" prefWidth="144.45196533203125" text="First-Level Division" />
@@ -43,16 +43,16 @@
          <children>
             <TableView fx:id="appointmentsTableView" layoutX="18.0" layoutY="37.0" prefHeight="200.0" prefWidth="866.0">
                <columns>
-                  <TableColumn fx:id="appointmentIDColumn" prefWidth="53.0" text="Appointment ID" />
+                  <TableColumn fx:id="appointmentIDColumn" prefWidth="53.0" text="ID" />
                   <TableColumn fx:id="titleColumn" prefWidth="63.0" text="Title" />
                   <TableColumn fx:id="descriptionColumn" prefWidth="90.0" text="Description" />
                   <TableColumn fx:id="locationColumn" prefWidth="67.0" text="Location" />
                   <TableColumn fx:id="contactColumn" prefWidth="70.0" text="Contact" />
-                  <TableColumn fx:id="typeColumn" minWidth="9.0" prefWidth="45.0" text="Type" />
-                  <TableColumn fx:id="startDateTimeColumn" prefWidth="140.0" text="Start Date and Time" />
-                  <TableColumn fx:id="endDateTimeColumn" prefWidth="140.0" text="End Date and Time" />
-                  <TableColumn fx:id="customerIDColumn" prefWidth="100.0" text="Customer ID" />
-                  <TableColumn fx:id="userIDColumn" prefWidth="100.0" text="User ID" />
+                  <TableColumn fx:id="typeColumn" minWidth="9.0" prefWidth="113.0" text="Type" />
+                  <TableColumn fx:id="startDateTimeColumn" prefWidth="129.0" text="Start Date and Time" />
+                  <TableColumn fx:id="endDateTimeColumn" prefWidth="121.0" text="End Date and Time" />
+                  <TableColumn fx:id="customerIDColumn" prefWidth="93.0" text="Customer ID" />
+                  <TableColumn fx:id="userIDColumn" prefWidth="69.0" text="User ID" />
                </columns>
             </TableView>
             <Label layoutX="18.0" layoutY="14.0" prefHeight="20.0" prefWidth="105.0" text="Appointments">
@@ -66,7 +66,10 @@
                <ToggleGroup fx:id="filter" />
             </fx:define>
             <RadioButton fx:id="thisMonthFilter" layoutX="709.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentMonthAppointments" text="This Month" />
-            <RadioButton fx:id="thisWeekFilter" layoutX="803.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentWeekAppointments" text="This Week" toggleGroup="$filter" />
+            <RadioButton fx:id="thisWeekFilter" layoutX="803.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayCurrentWeekAppointments" text="This Week">
+               <toggleGroup>
+                  <ToggleGroup fx:id="filter" />
+               </toggleGroup></RadioButton>
             <RadioButton fx:id="allAppointmentsFilter" layoutX="658.0" layoutY="11.0" mnemonicParsing="false" onAction="#refreshWindow" text="All" toggleGroup="$filter" />
          </children>
       </AnchorPane>

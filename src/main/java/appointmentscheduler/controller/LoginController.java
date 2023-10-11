@@ -31,6 +31,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * The LoginController class controls the logic for the login form.
+ */
 public class LoginController implements Initializable {
 
     @FXML

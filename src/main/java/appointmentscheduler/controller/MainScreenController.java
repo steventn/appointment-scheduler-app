@@ -26,17 +26,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * The MainScreenController class controls the logic for the main screen.
+ */
 public class MainScreenController implements Initializable {
     @FXML
     private RadioButton allAppointmentsFilter;
@@ -69,13 +68,7 @@ public class MainScreenController implements Initializable {
     private TableColumn<Customers, String> countryColumn;
 
     @FXML
-    private Button deleteCustomerButton;
-
-    @FXML
     private Button modifyCustomerButton;
-
-    @FXML
-    private Button addCustomerButton;
 
     @FXML
     private TableView<Appointments> appointmentsTableView;

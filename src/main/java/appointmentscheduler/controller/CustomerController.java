@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * The CustomerController class controls the logic for the customer form.
+ */
 public class CustomerController implements Initializable {
     @FXML
     private TextField customerIDField;

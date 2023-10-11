@@ -1,5 +1,6 @@
 package appointmentscheduler.dao;
 
+import appointmentscheduler.helper.TimeUtil;
 import appointmentscheduler.model.Appointments;
 import appointmentscheduler.model.ReportsB;
 import appointmentscheduler.model.ReportsC;
@@ -72,15 +73,17 @@ public class ReportDao extends AppointmentDao {
 
     private static ReportsB createAppointmentReportBFromResultSet(ResultSet resultSet) throws SQLException {
         String month = resultSet.getString("month");
+        String monthName = TimeUtil.getMonthName(Integer.parseInt(month));
         String type = resultSet.getString("type");
         int totalAppointments = resultSet.getInt("total_appointments");
-        return new ReportsB(month, type, totalAppointments);
+        return new ReportsB(monthName, type, totalAppointments);
     }
 
     private static ReportsC createAppointmentReportCFromResultSet(ResultSet resultSet) throws SQLException {
         String month = resultSet.getString("month");
+        String monthName = TimeUtil.getMonthName(Integer.parseInt(month));
         String customerId = resultSet.getString("customer_id");
         int averageDuration = resultSet.getInt("average_duration");
-        return new ReportsC(customerId, month, averageDuration);
+        return new ReportsC(customerId, monthName, averageDuration);
     }
 }
