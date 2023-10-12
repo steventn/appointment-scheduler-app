@@ -11,14 +11,29 @@ public class ReportsB {
         this.totalAppointments = totalAppointments;
     }
 
+    /**
+     * Gets the month name.
+     *
+     * @return the month name
+     */
     public String getMonth() {
         return month;
     }
 
+    /**
+     * Gets the appointment type.
+     *
+     * @return the appointment type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Gets the total number of appointments for Report B.
+     *
+     * @return the total number of appointments for Report B
+     */
     public int getTotalAppointments() {
         return totalAppointments;
     }

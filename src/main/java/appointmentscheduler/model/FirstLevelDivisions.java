@@ -13,14 +13,29 @@ public class FirstLevelDivisions {
         this.countryId = countryId;
     }
 
+    /**
+     * Gets the division id.
+     *
+     * @return the division id
+     */
     public int getDivisionId() {
         return divisionId;
     }
 
+    /**
+     * Gets the division name.
+     *
+     * @return the division name
+     */
     public String getDivision() {
         return division;
     }
 
+    /**
+     * Gets the country id.
+     *
+     * @return the country id
+     */
     public int getCountryId() {
         return countryId;
     }

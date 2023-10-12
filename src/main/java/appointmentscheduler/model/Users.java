@@ -21,31 +21,12 @@ public class Users {
         this.lastUpdate = lastUpdate;
     }
 
+    /**
+     * Gets the user id.
+     *
+     * @return the user id
+     */
     public int getUserId() {
         return userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public Timestamp getCreateDate() {
-        return createDate;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
     }
 }

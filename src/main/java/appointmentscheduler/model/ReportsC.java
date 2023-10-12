@@ -11,14 +11,29 @@ public class ReportsC {
         this.averageDuration = averageDuration;
     }
 
+    /**
+     * Gets the customer id.
+     *
+     * @return the customer id
+     */
     public String getCustomerId() {
         return customerId;
     }
 
+    /**
+     * Gets the month name.
+     *
+     * @return the month name
+     */
     public String getMonth() {
         return month;
     }
 
+    /**
+     * Gets the average appointment duration.
+     *
+     * @return the average appointment duration
+     */
     public int getAverageDuration() {
         return averageDuration;
     }
