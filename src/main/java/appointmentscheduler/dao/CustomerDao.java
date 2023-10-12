@@ -1,6 +1,5 @@
 package appointmentscheduler.dao;
 
-import appointmentscheduler.helper.DBConnection;
 import appointmentscheduler.model.Customers;
 
 import javafx.collections.FXCollections;
@@ -12,8 +11,12 @@ import static appointmentscheduler.helper.DBConnection.connection;
 
 public class CustomerDao {
 
-    private static final Connection connection = DBConnection.connection;
-
+    /**
+     * Gets all customers.
+     *
+     * @return a list of customers
+     * @throws SQLException if a database access error occurs
+     */
     public ObservableList<Customers> getAllCustomers() throws SQLException {
         ObservableList<Customers> customersList = FXCollections.observableArrayList();
         String getAllCustomersSQL = "SELECT * FROM customers " +
@@ -29,6 +32,12 @@ public class CustomerDao {
         return customersList;
     }
 
+    /**
+     * Adds a new customer.
+     *
+     * @param customer the customer to add
+     * @throws SQLException if a database access error occurs
+     */
     public void addCustomer(Customers customer) throws SQLException {
         String insertCustomerSQL = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, " +
                 "Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) " +
@@ -46,11 +55,15 @@ public class CustomerDao {
             statement.setInt(10, customer.getDivisionId());
 
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Updates an existing customer.
+     *
+     * @param customer the customer to update
+     * @throws SQLException if a database access error occurs
+     */
     public void updateCustomer(Customers customer) throws SQLException {
         String updateCustomerSQL = "UPDATE customers " +
                 "SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Create_Date = ?, " +
@@ -69,11 +82,15 @@ public class CustomerDao {
             statement.setInt(9, customer.getDivisionId());
 
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Deletes a customer.
+     *
+     * @param customerId the ID of the customer to delete
+     * @throws SQLException if a database access error occurs
+     */
     public void deleteCustomer(int customerId) throws SQLException {
         String deleteCustomerSQL = "DELETE FROM customers WHERE Customer_ID = ?";
         try (PreparedStatement statement = connection.prepareStatement(deleteCustomerSQL)) {
@@ -82,6 +99,12 @@ public class CustomerDao {
         }
     }
 
+    /**
+     * Gets the latest customer ID.
+     *
+     * @return the latest customer ID
+     * @throws SQLException if a database access error occurs
+     */
     public int getLatestCustomerId() throws SQLException {
         String getLastCustomerId = "SELECT Customer_ID FROM customers " +
                 "ORDER BY Customer_ID DESC LIMIT 1";
@@ -95,6 +118,13 @@ public class CustomerDao {
         return customerId;
     }
 
+    /**
+     * Creates a Customers object from a result set.
+     *
+     * @param resultSet the result set
+     * @return a Customers object
+     * @throws SQLException if a database access error occurs
+     */
     private Customers createCustomerFromResultSet(ResultSet resultSet) throws SQLException {
         int customerId = resultSet.getInt("Customer_ID");
         int divisionId = resultSet.getInt("Division_ID");

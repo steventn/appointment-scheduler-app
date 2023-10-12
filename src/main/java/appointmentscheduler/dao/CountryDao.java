@@ -5,14 +5,19 @@ import appointmentscheduler.model.Countries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static appointmentscheduler.helper.DBConnection.connection;
 
 public class CountryDao {
-    public ObservableList<Countries> getAllCountries() throws SQLException, Exception {
+
+    /**
+     * Gets all countries.
+     *
+     * @return a list of countries
+     * @throws SQLException if a database access error occurs
+     */
+    public ObservableList<Countries> getAllCountries() throws SQLException {
         ObservableList<Countries> countriesList = FXCollections.observableArrayList();
         String countriesSQL = "select * FROM countries";
         try (PreparedStatement countriesStatement = connection.prepareStatement(countriesSQL);
@@ -25,6 +30,13 @@ public class CountryDao {
         return countriesList;
     }
 
+    /**
+     * Creates a Countries object from a result set.
+     *
+     * @param resultSet the result set
+     * @return a Countries object
+     * @throws SQLException if a database access error occurs
+     */
     private Countries createCountriesFromResultSet(ResultSet resultSet) throws SQLException {
         int countryId = resultSet.getInt("Country_ID");
         String country = resultSet.getString("Country");

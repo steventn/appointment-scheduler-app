@@ -12,7 +12,14 @@ import java.sql.SQLException;
 import static appointmentscheduler.helper.DBConnection.connection;
 
 public class FirstLevelDivisionDao {
-    public ObservableList<FirstLevelDivisions> getAllFirstLevelDivisions() throws Exception {
+
+    /**
+     * Gets all first level divisions.
+     *
+     * @return a list of first level divisions
+     * @throws SQLException if a database access error occurs
+     */
+    public ObservableList<FirstLevelDivisions> getAllFirstLevelDivisions() throws SQLException {
         ObservableList<FirstLevelDivisions> firstLevelDivisionsList = FXCollections.observableArrayList();
         String firstLevelDivisionsSQL = "select * FROM first_level_divisions";
         try (PreparedStatement firstLevelDivisionStatement = connection.prepareStatement(firstLevelDivisionsSQL);
@@ -25,21 +32,37 @@ public class FirstLevelDivisionDao {
         return firstLevelDivisionsList;
     }
 
+    /**
+     * Gets first level divisions by country.
+     *
+     * @param country the country name
+     * @return a list of first level divisions
+     * @throws SQLException if a database access error occurs
+     */
     public ObservableList<FirstLevelDivisions> getFirstLevelDivisionByCountry(String country) throws SQLException {
         ObservableList<FirstLevelDivisions> firstLevelDivisionsList = FXCollections.observableArrayList();
-        String firstLevelDivisionsSQL = "SELECT * FROM FIRST_LEVEL_DIVISIONS \n" +
-                "JOIN COUNTRIES ON FIRST_LEVEL_DIVISIONS.Country_ID = COUNTRIES.Country_ID\n" +
-                "WHERE Country = '" + country + "'";
-        try (PreparedStatement firstLevelDivisionStatement = connection.prepareStatement(firstLevelDivisionsSQL);
-             ResultSet resultSet = firstLevelDivisionStatement.executeQuery()) {
-            while (resultSet.next()) {
-                FirstLevelDivisions firstLevelDivisions = createFirstLevelDivisionsFromResultSet(resultSet);
-                firstLevelDivisionsList.add(firstLevelDivisions);
+        String firstLevelDivisionsSQL = "SELECT * FROM FIRST_LEVEL_DIVISIONS " +
+                "JOIN COUNTRIES ON FIRST_LEVEL_DIVISIONS.Country_ID = COUNTRIES.Country_ID " +
+                "WHERE Country = ?";
+        try (PreparedStatement firstLevelDivisionStatement = connection.prepareStatement(firstLevelDivisionsSQL)) {
+            firstLevelDivisionStatement.setString(1, country);
+            try (ResultSet resultSet = firstLevelDivisionStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    FirstLevelDivisions firstLevelDivisions = createFirstLevelDivisionsFromResultSet(resultSet);
+                    firstLevelDivisionsList.add(firstLevelDivisions);
+                }
             }
         }
         return firstLevelDivisionsList;
     }
 
+    /**
+     * Creates a FirstLevelDivisions object from a result set.
+     *
+     * @param resultSet the result set
+     * @return a FirstLevelDivisions object
+     * @throws SQLException if a database access error occurs
+     */
     private FirstLevelDivisions createFirstLevelDivisionsFromResultSet(ResultSet resultSet) throws SQLException {
         int divisionId = resultSet.getInt("Division_ID");
         String division = resultSet.getString("Division");

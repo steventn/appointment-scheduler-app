@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -88,9 +89,17 @@ public class ReportController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ReportDao reportDao = new ReportDao();
-        ObservableList<ReportsB> reportBAppointments = reportDao.getTotalAppointmentsByTypeMonth();
-        ObservableList<ReportsC> reportCAppointments = reportDao.getTotalAppointmentsByDuration();
-        ObservableList<Appointments> reportAAppointments = reportDao.getTotalAppointmentsSortedByCustomer();
+        ObservableList<ReportsB> reportBAppointments = null;
+        ObservableList<ReportsC> reportCAppointments = null;
+        ObservableList<Appointments> reportAAppointments = null;
+
+        try {
+            reportBAppointments = reportDao.getTotalAppointmentsByTypeMonth();
+            reportCAppointments = reportDao.getTotalAppointmentsByDuration();
+            reportAAppointments = reportDao.getTotalAppointmentsSortedByCustomer();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         appointmentIDColumnA.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         titleColumnA.setCellValueFactory(new PropertyValueFactory<>("title"));

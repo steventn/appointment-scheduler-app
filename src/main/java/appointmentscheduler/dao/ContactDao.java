@@ -1,17 +1,22 @@
 package appointmentscheduler.dao;
 
 import appointmentscheduler.model.Contacts;
-import appointmentscheduler.helper.DBConnection;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+import static appointmentscheduler.helper.DBConnection.connection;
+
 public class ContactDao {
 
-    private static final Connection connection = DBConnection.connection;
-
+    /**
+     * Gets all contacts.
+     *
+     * @return a list of contacts
+     * @throws SQLException if a database access error occurs
+     */
     public ObservableList<Contacts> getAllContacts() throws SQLException {
         ObservableList<Contacts> contactList = FXCollections.observableArrayList();
         String getAllContactsSQL = "SELECT * FROM contacts";
@@ -25,24 +30,34 @@ public class ContactDao {
         return contactList;
     }
 
-    public Contacts getContact(int contactId) {
+    /**
+     * Gets a contact by contact ID.
+     *
+     * @param contactId the ID of the contact
+     * @return a contact
+     * @throws SQLException if a database access error occurs
+     */
+    public Contacts getContact(int contactId) throws SQLException {
         Contacts contactResult = null;
-        try {
-            String sqlStatement = "select * FROM contacts WHERE Contact_ID  = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
-                statement.setInt(1, contactId);
-                ResultSet result = statement.executeQuery();
+        String sqlStatement = "select * FROM contacts WHERE Contact_ID  = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, contactId);
+            ResultSet result = statement.executeQuery();
 
-                while (result.next()) {
-                    contactResult = createContactFromResultSet(result);
-                }
+            while (result.next()) {
+                contactResult = createContactFromResultSet(result);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return contactResult;
     }
 
+    /**
+     * Creates a Contact object from a result set.
+     *
+     * @param resultSet the result set
+     * @return a Contact object
+     * @throws SQLException if a database access error occurs
+     */
     private Contacts createContactFromResultSet(ResultSet resultSet) throws SQLException {
         int contactId = resultSet.getInt("Contact_ID");
         String contactName = resultSet.getString("Contact_Name");
