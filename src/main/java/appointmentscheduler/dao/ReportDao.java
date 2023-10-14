@@ -78,6 +78,28 @@ public class ReportDao extends AppointmentDao {
     }
 
     /**
+     * Gets total appointments filtered by customer.
+     *
+     * @return a list of Appointments objects
+     * @throws SQLException if a database access error occurs
+     */
+    public ObservableList<Appointments> getAppointmentsByCustomerId(int customerId) throws SQLException {
+        ObservableList<Appointments> reportsAList = FXCollections.observableArrayList();
+        String sqlStatement = "select * FROM appointments WHERE Customer_ID  = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlStatement)) {
+            statement.setInt(1, customerId);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Appointments appointments = AppointmentDao.createAppointmentsFromResultSet(result);
+                reportsAList.add(appointments);
+            }
+        }
+        return reportsAList;
+    }
+
+    /**
      * Creates a ReportsB object from a result set.
      *
      * @param resultSet the result set

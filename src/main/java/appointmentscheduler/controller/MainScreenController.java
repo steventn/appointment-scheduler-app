@@ -112,6 +112,10 @@ public class MainScreenController implements Initializable {
 
     /**
      * Filters the appointments to display only those in the current month.
+     *
+     * The lambda expression in this method is used to filter appointments that occur in the current month.
+     * This is done by comparing the month and year values of each appointment's start date with the current month and year.
+     * The filtered appointments are then put into an observable list and displayed in the appointmentsTableView.
      */
     @FXML
     public void displayCurrentMonthAppointments() {
@@ -133,6 +137,10 @@ public class MainScreenController implements Initializable {
 
     /**
      * Filters the appointments to display only those in the current week.
+     *
+     * The lambda expression in this method is used to filter appointments that occur in the current week.
+     * This is done by comparing the week and year values of each appointment's start date with the current week and year.
+     * The filtered appointments are then put into an observable list and displayed in the appointmentsTableView.
      */
     public void displayCurrentWeekAppointments() {
         LocalDate now = LocalDate.now();
@@ -216,9 +224,12 @@ public class MainScreenController implements Initializable {
             alertUtil.displayErrorAlert("alert.appointmentError.appointmentError","alert.appointmentError.noAppointmentSelected", "alert.loginError.invalidCredentialsContext");
         } else {
             selectedAppointment= AppointmentDao.getAppointmentByCustomerId(selectedAppointment.getCustomerId());
+            String selectedAppointmentId = String.valueOf(selectedAppointment.getAppointmentId());
+            String selectedAppointmentType = selectedAppointment.getType();
+            String deletionMessage = String.format("\n Appointment Id: %s, Type: %s", selectedAppointmentId, selectedAppointmentType);
             appointmentDao.deleteAppointment(selectedAppointment.getAppointmentId());
             refreshWindow();
-            alertUtil.displaySuccessAlert("alert.success.title", "alert.confirmation.confirmation", "alert.appointmentSuccess.deletion");
+            alertUtil.displaySuccessAlert("alert.success.title", "alert.confirmation.confirmation", "alert.appointmentSuccess.deletion", deletionMessage);
         }
 
     }

@@ -31,4 +31,14 @@ public class AlertUtil {
 
         alert.showAndWait();
     }
+
+    public void displaySuccessAlert(String titleKey, String headerTextKey, String contentTextKey, String extraInformation) {
+        this.messages = ResourceBundle.getBundle("messages", userLocale);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(this.messages.getString(titleKey));
+        alert.setHeaderText(this.messages.getString(headerTextKey));
+        alert.setContentText(this.messages.getString(contentTextKey) + extraInformation);
+
+        alert.showAndWait();
+    }
 }

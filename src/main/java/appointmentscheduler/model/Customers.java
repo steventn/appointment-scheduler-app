@@ -162,4 +162,14 @@ public class Customers {
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
+
+    /**
+     * Returns a string representation of the customer.
+     *
+     * @return a string representation of the customer
+     */
+    @Override
+    public String toString() {
+        return "ID: " + customerId + ", Name: " + name;
+    }
 }

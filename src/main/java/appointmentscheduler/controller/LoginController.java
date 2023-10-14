@@ -120,7 +120,13 @@ public class LoginController implements Initializable {
             Duration duration = Duration.between(localAppointmentTime, localTime).abs();
 
             if (duration.compareTo(Duration.of(15, ChronoUnit.MINUTES)) <= 0) {
-                alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.upcomingAppointment", "alert.appointmentSuccess.upcomingAppointment");
+                String appointmentId = String.valueOf(appointment.getAppointmentId());
+                String appointmentDate = String.valueOf(appointment.getStartDate());
+                String foundAppointmentTime = String.valueOf(localTime);
+                String appointmentInfo = String.format("\n Appointment ID: %s, Appointment Date: %s, Appointment Time: %s", appointmentId, appointmentDate, foundAppointmentTime);
+
+                alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.upcomingAppointment", "alert.appointmentSuccess.upcomingAppointment", appointmentInfo);
+                return;
             }
         }
         alertUtil.displaySuccessAlert("alert.confirmation.confirmation", "alert.appointmentSuccess.noUpcomingAppointment", "alert.appointmentSuccess.noUpcomingAppointment");

@@ -69,7 +69,7 @@ public class AppointmentController implements Initializable {
     @FXML
     private ComboBox<Integer> userIdField;
 
-    ObservableList<Appointments> allAppointments = null;
+    ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
     int latestAppointmentId = 0;
     AlertUtil alertUtil = new AlertUtil();
 
