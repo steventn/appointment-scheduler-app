@@ -1,6 +1,4 @@
 Author: Steven Nguyen
-Student ID: 010596963
-Contact Information: sngu144@wgu.edu
 
 Title: Company Appointment Scheduler App
 Purpose: Java application with a GUI that helps company employees schedule appointments with their clients, view reports, and adjust customer information.
